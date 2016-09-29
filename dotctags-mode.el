@@ -41,6 +41,7 @@
     (modify-syntax-entry ?\n ">" st)
     st))
   
+;;;###autoload
 (define-derived-mode dotctags-mode conf-windows-mode "Conf[cTags]"
   "Conf Mode for ctags config."
   :syntax-table dotctags-mode-syntax-table
