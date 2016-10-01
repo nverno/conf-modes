@@ -66,7 +66,7 @@
 (company-conf dotctags
               :program "ctags"
               :keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)"
-              :keyword-re-pos '((candidate . 1) (annotation . 2)))
+              :keyword-re-pos ((candidate . 1) (annotation . 2)))
 
 (provide 'dotctags-mode)
 

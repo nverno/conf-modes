@@ -69,7 +69,7 @@ completions candidate and its annotation."
          (or (get-text-property 0 'annotation arg) ""))
 
        (defun ,candidates (arg)
-         (all-completions arg ,keywords))
+         (all-completions arg (,keywords)))
 
        (defun ,complete (command &optional arg &rest _args)
          (interactive (list 'interactive))
