@@ -26,7 +26,8 @@
 ;;; Commentary:
 ;;; Code:
 (eval-when-compile
-  (require 'cl-lib))
+  (require 'cl-lib)
+  (require 'conf-macros))
 (require 'company)
 (require 'conf-mode)
 
@@ -62,37 +63,10 @@
 ;; ------------------------------------------------------------
 ;;* Completion
 
-(defvar company-dotctags-keywords nil)
-(defun company-dotctags-keywords ()
-  "List of options for ctags."
-  (or company-dotctags-keywords
-      (setq company-dotctags-keywords
-            (let ((lines (process-lines "ctags" "--help")))
-              (cl-loop for line in lines
-                 when (string-match "^\\s-*--\\([^=]+\\)=\\([^\n]*\\)" line)
-                 collect (propertize
-                          (concat "--" (match-string-no-properties 1 line))
-                          'annot (match-string-no-properties 2 line)))))))
-
-(defun company-dotctags-candidates (arg)
-  (all-completions arg (company-dotctags-keywords)))
-
-(defun company-dotctags-annot (arg)
-  (get-text-property 0 'annot arg))
-
-(defun company-dotctags-prefix ()
-  (and (eq major-mode 'dotctags-mode)
-       (not (company-in-string-or-comment))
-       (company-grab-symbol)))
-
-(defun company-dotctags (command &optional arg &rest _args)
-  (interactive (list 'interactive))
-  (cl-case command
-    (interactive (company-begin-backend 'company-autoconf))
-    (prefix (company-dotctags-prefix))
-    (annotation (company-dotctags-annot arg))
-    (candidates (company-dotctags-candidates arg))
-    (duplicates nil)))
+(company-conf dotctags
+              :program "ctags"
+              :keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)"
+              :keyword-re-pos '((candidate . 1) (annotation . 2)))
 
 (provide 'dotctags-mode)
 

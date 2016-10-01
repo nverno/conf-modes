@@ -3,18 +3,16 @@
 *Author:* noah peart <noah.v.peart@gmail.com><br>
 *URL:* [http://github.com/nverno/w32-registry-mode](http://github.com/nverno/w32-registry-mode)<br>
 
-Simple mode for windows registry files, derived from `conf-windows-mode`.
-Adds some convenience functions to look at registry key values, basic
-menu, bindings, imenu, etc.
+## Configuration modes
 
-For company-mode completion for registry keys, see
-[company-w32reg](http://github.com/nverno/company-w32reg)
+- `w32-registry-mode` for windows registry files
+ Adds some convenience functions to look at registry key values, basic
+ menu, bindings, imenu, etc.
+ Completion for registry values
+ [company-w32reg](http://github.com/nverno/company-w32reg)
+- `dotctags-mode` for .ctags files
 
-See also: https://www.emacswiki.org/emacs/MsWindowsRegistry
-
-Usage:
-
-Just add to load-path and the mode should autoload for .reg files.
+`conf-macros` generates company backend from --help output.
 
 
 ---
