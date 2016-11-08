@@ -1,11 +1,11 @@
 emacs ?= emacs
-wget ?= wget
+wget  ?= wget
 
 .PHONY: clean distclean
 all:
 
-README.md: el2markdown.el w32-registry-mode.el
-	$(emacs) -batch -l $< w32-registry-mode.el -f el2markdown-write-readme
+README.md: el2markdown.el conf-modes.el
+	$(emacs) -batch -l $< conf-modes.el -f el2markdown-write-readme
 	$(RM) $@~
 
 .INTERMEDIATE: el2markdown.el

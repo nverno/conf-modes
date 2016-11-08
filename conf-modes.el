@@ -1,7 +1,7 @@
-;;; w32-registry-mode.el --- Simple mode for windows registry files.
+;;; conf-modes.el --- Major modes for editing various configuration files
 
 ;; Author: noah peart <noah.v.peart@gmail.com>
-;; URL: http://github.com/nverno/w32-registry-mode
+;; URL: http://github.com/nverno/conf-modes
 
 ;; This file is not part of GNU Emacs
 
@@ -171,4 +171,4 @@ otherwise template is inserted at beginning of buffer and point preserved."
 
 (provide 'w32-registry-mode)
 
-;;; w32-registry-mode.el ends here
+;;; conf-modes.el ends here

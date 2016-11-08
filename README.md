@@ -1,7 +1,7 @@
-# w32-registry-mode - Simple mode for windows registry files
+# conf-modes - Major modes for editing various configuration files
 
 *Author:* noah peart <noah.v.peart@gmail.com><br>
-*URL:* [http://github.com/nverno/w32-registry-mode](http://github.com/nverno/w32-registry-mode)<br>
+*URL:* [http://github.com/nverno/conf-modes](http://github.com/nverno/conf-modes)<br>
 
 ## Configuration modes
 
@@ -17,4 +17,4 @@
 
 
 ---
-Converted from `w32-registry-mode.el` by [*el2markdown*](https://github.com/Lindydancer/el2markdown).
+Converted from `conf-modes.el` by [*el2markdown*](https://github.com/Lindydancer/el2markdown).
