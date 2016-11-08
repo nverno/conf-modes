@@ -1,8 +1,13 @@
-emacs ?= emacs
 wget  ?= wget
+RM     = rm -rf
+emacs ?= emacs
 
-.PHONY: clean distclean
-all:
+.PHONY: test clean distclean nvp
+all: test
+test:
+	$(emacs) -Q -batch --eval '(progn (push "." load-path))' \
+	-L . -l ert -l test/conf-tests.el                        \
+	-f ert-run-tests-batch-and-exit
 
 README.md: el2markdown.el conf-modes.el
 	$(emacs) -batch -l $< conf-modes.el -f el2markdown-write-readme
