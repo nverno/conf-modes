@@ -87,4 +87,3 @@
 
 (provide 'xkb-mode)
 ;;; xkb-mode.el ends here
-

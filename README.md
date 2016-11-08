@@ -5,6 +5,7 @@
 
 ## Configuration modes
 
+- `xkb-mode` for xkb configuration files
 - `w32-registry-mode` for windows registry files
  Adds some convenience functions to look at registry key values, basic
  menu, bindings, imenu, etc.
