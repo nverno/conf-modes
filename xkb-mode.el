@@ -83,7 +83,7 @@
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("/xkb/*" . xkb-mode))
+(add-to-list 'auto-mode-alist '("/xkb/.*" . xkb-mode))
 
 (provide 'xkb-mode)
 ;;; xkb-mode.el ends here
