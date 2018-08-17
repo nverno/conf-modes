@@ -31,7 +31,8 @@
 
 (cl-defmacro company-conf (name
                            &key
-                           program 
+                           program
+                           (args)       ;optional args to pass to program
                            (keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)")
                            (keyword-re-pos
                             '((candidate . 1)
@@ -50,7 +51,7 @@ completions candidate and its annotation."
        (defun ,keywords nil
          (or ,keywords
              (setq ,keywords
-                   (let ((lines (process-lines ,program "--help")))
+                   (let ((lines (process-lines ,program ,@(or args '("--help")))))
                      (cl-loop for line in lines
                         when (string-match ,keyword-re line)
                         collect (propertize

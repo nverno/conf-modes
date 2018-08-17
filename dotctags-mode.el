@@ -31,8 +31,8 @@
 (require 'company)
 (require 'conf-mode)
 
-;; ------------------------------------------------------------
-;;* Mode
+;; -------------------------------------------------------------------
+;;; Major-mode
 
 (defun dotctags-propertize (start end)
   (goto-char start)
@@ -61,7 +61,7 @@
 (add-to-list 'auto-mode-alist '("\\.ctags\\'" . dotctags-mode))
 
 ;; ------------------------------------------------------------
-;;* Completion
+;;; Completion
 
 (company-conf dotctags
               :program "ctags"

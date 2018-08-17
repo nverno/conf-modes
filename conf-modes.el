@@ -20,9 +20,12 @@
 ;;
 ;; - `indentpro-mode' for .indent.pro configs
 ;;
+;; - `npmrc-mode' for .npmrc
+;;
 ;; - various others
 ;;
-;; `conf-macros' generates company backend from --help output.
+;; `conf-macros' generates company backends from calling some sort of
+;;     "--help"-like output from a command-line program
 
 ;;; Code:
 
