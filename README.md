@@ -6,14 +6,13 @@
 ## Configuration modes
 
 - `xkb-mode` for xkb configuration files
-- `w32-registry-mode` for windows registry files
- Adds some convenience functions to look at registry key values, basic
- menu, bindings, imenu, etc.
- Completion for registry values
- [company-w32reg](http://github.com/nverno/company-w32reg)
 - `dotctags-mode` for .ctags files
+- `indentpro-mode` for .indent.pro configs
+- `npmrc-mode` for .npmrc
+- various others
 
-`conf-macros` generates company backend from --help output.
+`conf-macros` generates company backends from calling some sort of
+    "--help"-like output from a command-line program
 
 
 ---
