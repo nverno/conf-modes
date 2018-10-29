@@ -1,4 +1,4 @@
-;;; company-indentpro.el --- Emacs mdoe and company completion backend for .indent.pro files.
+;;; company-indentpro.el --- Emacs mdoe and company completion backend for .indent.pro files. -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/company-indent-pro
