@@ -29,36 +29,48 @@
 ;;; Code:
 (eval-when-compile
   (require 'cl-lib))
+(require 'company)
 
 (eval-when-compile
-  (defmacro re-opt (opts)
-    `(concat "\\_<" (regexp-opt ,opts t) "\\_>")))
+  (defmacro re-opt (type)
+    `(concat "\\_<"
+             (regexp-opt ',(cdr (cl-assoc type housemate-mode-keywords)) t)
+             "\\_>")))
+
+(eval-and-compile
+  (defvar housemate-mode-keywords
+    '((leaders  . '("define" "add" "set" "show"
+                    ;; authentication
+                    "define_permission" "define_role" "add_entitlement_to_role"
+                    "create_user" "add_user_credential" "add_role_to_user"
+                    "create_resource_role" "add_resource_role_to_user"))
+      (keywords . '("house" "room" "sensor" "appliance" "occupant"
+                    "type" "configuration" "energy-use" "address" "status"
+                    "value" "floor" "windows"
+                    ;; auth
+                    "voice_print"))
+      (types . '("pet" "child" "adult"    ;occupant types
+                 "resting" "active"       ;occupant states
+                 ;; room types
+                 "kitchen" "closet" "diningroom" "livingroom" "hallway"
+                 "bedroom" "familyroom" "garage" "bathroom"
+                 ;; sensor types
+                 "smoke_detector" "camera"
+                 ;; appliance types
+                 "thermostat" "window" "door" "light" "tv" "pandora"
+                 "oven" "refrigerator" "ava")))))
 
 (defvar housemate-mode-font-lock-keywords
   (eval-when-compile
-    (let* ((leaders '("define" "add" "set" "show"))
-           (keywords '("house" "room" "sensor" "appliance" "occupant"
-                       "type" "configuration" "energy-use" "address" "status"
-                       "value" "floor" "windows"))
-           (types '("pet" "child" "adult" ;occupant types
-                    "resting" "active"  ;occupant states
-                    ;; room types
-                    "kitchen" "closet" "diningroom" "livingroom" "hallway"
-                    "bedroom" "familyroom" "garage" "bathroom"
-                    ;; sensor types
-                    "smoke_detector" "camera"
-                    ;; appliance types
-                    "thermostat" "window" "door" "light" "tv" "pandora"
-                    "oven" "refrigerator" "ava")))
-      `(("“.*”" . font-lock-string-face)
-        (,(re-opt leaders) (1 font-lock-keyword-face))
-        (,(re-opt keywords) (1 font-lock-builtin-face))
-        (,(re-opt types) (1 font-lock-type-face))
-        ("\\_<[0-9]+\\_>" . nil)
-        ("\\_<[[:alpha:]][[:alnum:]]*_[[:alnum:]_]+\\_>" .
-         font-lock-function-name-face)
-        ("\\_<[[:alpha:]][[:alnum:]_]*\\(?::[[:alnum:]_]+\\(?::[[:alnum:]_]+\\)?\\)?" .
-         font-lock-variable-name-face)))))
+    `(("“.*”" . font-lock-string-face)
+      (,(re-opt leaders) (1 font-lock-keyword-face))
+      (,(re-opt keywords) (1 font-lock-builtin-face))
+      (,(re-opt types) (1 font-lock-type-face))
+      ("\\_<[0-9]+\\_>" . nil)
+      ("\\_<[[:alpha:]][[:alnum:]]*_[[:alnum:]_]+\\_>" .
+       font-lock-function-name-face)
+      ("\\_<[[:alpha:]][[:alnum:]_]*\\(?::[[:alnum:]_]+\\(?::[[:alnum:]_]+\\)?\\)?" .
+       font-lock-variable-name-face))))
 
 (defvar housemate-mode-syntax-table
   (let ((tab (make-syntax-table)))
@@ -74,7 +86,21 @@
   (setq-local comment-start "# ")
   (setq-local comment-end "")
   (setq-local font-lock-defaults
-              '(housemate-mode-font-lock-keywords nil 'case-fold nil)))
+              '(housemate-mode-font-lock-keywords nil 'case-fold nil))
+  (make-local-variable 'company-backends)
+  (push 'company-keywords company-backends))
+
+;;; completion
+(eval-when-compile
+  (defvar company-keywords-alist))
+
+(with-eval-after-load 'company-keywords
+  (when (not (assq 'housemate-mode company-keywords-alist))
+    (let ((kw (cl-loop for (_k . v) in housemate-mode-keywords
+                 append v)))
+      (setcdr
+       (nthcdr (1- (length company-keywords-alist)) company-keywords-alist)
+       `(,(append '(housemate-mode) kw))))))
 
 (provide 'housemate-mode)
 ;;; housemate-mode.el ends here
