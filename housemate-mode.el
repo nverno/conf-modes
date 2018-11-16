@@ -41,9 +41,13 @@
   '((leaders  . ("define" "add" "set" "show"
                  ;; authentication
                  "show_config" "logout" "login"
-                 "define_permission" "define_role" "add_entitlement_to_role"
-                 "create_user" "add_user_credential" "add_role_to_user"
-                 "create_resource_role" "add_resource_role_to_user"))
+                 "define_user" "create_user"
+                 "define_permission" "create_permission"
+                 "define_role" "create_role"
+                 "define_resource" "create_resource"
+                 "define_resource_role" "create_resource_role"
+                 "add_entitlement_to_role" "add_user_credential"
+                 "add_role_to_user" "add_resource_role_to_user"))
     (keywords . ("house" "room" "sensor" "appliance" "occupant"
                  "type" "configuration" "energy-use" "address" "status"
                  "value" "floor" "windows"
