@@ -34,31 +34,31 @@
 (eval-when-compile
   (defmacro re-opt (type)
     `(concat "\\_<"
-             (regexp-opt ,(cdr (cl-assoc type housemate-mode-keywords)) t)
+             ,(regexp-opt (cdr (cl-assoc type housemate-mode-keywords)) t)
              "\\_>")))
 
-(eval-and-compile
-  (defvar housemate-mode-keywords
-    '((leaders  . ("define" "add" "set" "show"
-                    ;; authentication
-                    "define_permission" "define_role" "add_entitlement_to_role"
-                    "create_user" "add_user_credential" "add_role_to_user"
-                    "create_resource_role" "add_resource_role_to_user"))
-      (keywords . ("house" "room" "sensor" "appliance" "occupant"
-                    "type" "configuration" "energy-use" "address" "status"
-                    "value" "floor" "windows"
-                    ;; auth
-                    "voice_print"))
-      (types . ("pet" "child" "adult"    ;occupant types
-                 "resting" "active"       ;occupant states
-                 ;; room types
-                 "kitchen" "closet" "diningroom" "livingroom" "hallway"
-                 "bedroom" "familyroom" "garage" "bathroom"
-                 ;; sensor types
-                 "smoke_detector" "camera"
-                 ;; appliance types
-                 "thermostat" "window" "door" "light" "tv" "pandora"
-                 "oven" "refrigerator" "ava")))))
+(defvar housemate-mode-keywords
+  '((leaders  . ("define" "add" "set" "show"
+                 ;; authentication
+                 "show_config"
+                 "define_permission" "define_role" "add_entitlement_to_role"
+                 "create_user" "add_user_credential" "add_role_to_user"
+                 "create_resource_role" "add_resource_role_to_user"))
+    (keywords . ("house" "room" "sensor" "appliance" "occupant"
+                 "type" "configuration" "energy-use" "address" "status"
+                 "value" "floor" "windows"
+                 ;; auth
+                 "voice_print"))
+    (types . ("pet" "child" "adult"    ;occupant types
+              "resting" "active"       ;occupant states
+              ;; room types
+              "kitchen" "closet" "diningroom" "livingroom" "hallway"
+              "bedroom" "familyroom" "garage" "bathroom"
+              ;; sensor types
+              "smoke_detector" "camera"
+              ;; appliance types
+              "thermostat" "window" "door" "light" "tv" "pandora"
+              "oven" "refrigerator" "ava"))))
 
 (defvar housemate-mode-font-lock-keywords
   (eval-when-compile
