@@ -40,7 +40,7 @@
 (defvar housemate-mode-keywords
   '((leaders  . ("define" "add" "set" "show"
                  ;; authentication
-                 "show_config"
+                 "show_config" "logout" "login"
                  "define_permission" "define_role" "add_entitlement_to_role"
                  "create_user" "add_user_credential" "add_role_to_user"
                  "create_resource_role" "add_resource_role_to_user"))
@@ -48,7 +48,7 @@
                  "type" "configuration" "energy-use" "address" "status"
                  "value" "floor" "windows"
                  ;; auth
-                 "voice_print"))
+                 "voice_print" "password"))
     (types . ("pet" "child" "adult"    ;occupant types
               "resting" "active"       ;occupant states
               ;; room types
