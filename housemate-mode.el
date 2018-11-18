@@ -73,7 +73,7 @@
       ("\\_<[0-9]+\\_>" . nil)
       ("\\_<[[:alpha:]][[:alnum:]]*_[[:alnum:]_]+\\_>" .
        font-lock-function-name-face)
-      ("\\_<[[:alpha:]][[:alnum:]_]*\\(?::[[:alnum:]_]+\\(?::[[:alnum:]_]+\\)?\\)?" .
+      ("[[:alpha:]][[:alnum:]_]*\\(?::[[:alnum:]_]+\\(?::[[:alnum:]_]+\\)?\\)?" .
        font-lock-variable-name-face))))
 
 (defvar housemate-mode-syntax-table
