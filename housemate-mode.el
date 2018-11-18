@@ -40,7 +40,7 @@
 (defvar housemate-mode-keywords
   '((leaders  . ("define" "add" "set" "show"
                  ;; authentication
-                 "show_config" "logout" "login"
+                 "show_config" "login" "logout_user" "logout"
                  "define_user" "create_user"
                  "define_permission" "create_permission"
                  "define_role" "create_role"
