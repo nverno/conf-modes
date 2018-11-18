@@ -78,8 +78,8 @@
 
 (defvar housemate-mode-syntax-table
   (let ((tab (make-syntax-table)))
-    (modify-syntax-entry ?: "w" tab)
-    (modify-syntax-entry ?_ "w" tab)
+    (modify-syntax-entry ?: "_" tab)
+    (modify-syntax-entry ?_ "_" tab)
     (modify-syntax-entry ?\n ">" tab)
     (modify-syntax-entry ?# "<" tab)
     (modify-syntax-entry ?\" "\"" tab)
@@ -105,6 +105,9 @@
       (setcdr
        (nthcdr (1- (length company-keywords-alist)) company-keywords-alist)
        `(,(append '(housemate-mode) kw))))))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.hm\\'" . housemate-mode))
 
 (provide 'housemate-mode)
 ;;; housemate-mode.el ends here
