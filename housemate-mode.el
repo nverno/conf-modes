@@ -50,7 +50,7 @@
                  "add_role_to_user" "add_resource_role_to_user"))
     (keywords . ("house" "room" "sensor" "appliance" "occupant"
                  "type" "configuration" "energy-use" "address" "status"
-                 "value" "floor" "windows"
+                 "value" "floor" "windows" "to_house"
                  ;; auth
                  "voice_print" "password"))
     (types . ("pet" "child" "adult"    ;occupant types
@@ -62,7 +62,8 @@
               "smoke_detector" "camera"
               ;; appliance types
               "thermostat" "window" "door" "light" "tv" "pandora"
-              "oven" "refrigerator" "ava"))))
+              "oven" "refrigerator" "ava"))
+    (cmds . ("voice_command"))))
 
 (defvar housemate-mode-font-lock-keywords
   (eval-when-compile
@@ -70,6 +71,7 @@
       (,(re-opt leaders) (1 font-lock-keyword-face))
       (,(re-opt keywords) (1 font-lock-builtin-face))
       (,(re-opt types) (1 font-lock-type-face))
+      (,(re-opt cmds) (1 font-lock-constant-face))
       ("\\_<[0-9]+\\_>" . nil)
       ("\\_<[[:alpha:]][[:alnum:]]*_[[:alnum:]_]+\\_>" .
        font-lock-function-name-face)
