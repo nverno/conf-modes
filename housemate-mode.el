@@ -31,39 +31,40 @@
   (require 'cl-lib))
 (require 'company)
 
+(eval-and-compile
+  (defvar housemate-mode-keywords
+    '((leaders  . ("define" "add" "set" "show"
+                   ;; authentication
+                   "show_config" "login" "logout_user" "logout"
+                   "define_user" "create_user"
+                   "define_permission" "create_permission"
+                   "define_role" "create_role"
+                   "define_resource" "create_resource"
+                   "define_resource_role" "create_resource_role"
+                   "add_entitlement_to_role" "add_user_credential"
+                   "add_role_to_user" "add_resource_role_to_user"))
+      (keywords . ("house" "room" "sensor" "appliance" "occupant"
+                   "type" "configuration" "energy-use" "address" "status"
+                   "value" "floor" "windows" "to_house"
+                   ;; auth
+                   "voice_print" "password"))
+      (types . ("pet" "child" "adult"    ;occupant types
+                "resting" "active"       ;occupant states
+                ;; room types
+                "kitchen" "closet" "diningroom" "livingroom" "hallway"
+                "bedroom" "familyroom" "garage" "bathroom"
+                ;; sensor types
+                "smoke_detector" "camera"
+                ;; appliance types
+                "thermostat" "window" "door" "light" "tv" "pandora"
+                "oven" "refrigerator" "ava"))
+      (cmds . ("voice_command")))))
+
 (eval-when-compile
   (defmacro re-opt (type)
     `(concat "\\_<"
              ,(regexp-opt (cdr (cl-assoc type housemate-mode-keywords)) t)
              "\\_>")))
-
-(defvar housemate-mode-keywords
-  '((leaders  . ("define" "add" "set" "show"
-                 ;; authentication
-                 "show_config" "login" "logout_user" "logout"
-                 "define_user" "create_user"
-                 "define_permission" "create_permission"
-                 "define_role" "create_role"
-                 "define_resource" "create_resource"
-                 "define_resource_role" "create_resource_role"
-                 "add_entitlement_to_role" "add_user_credential"
-                 "add_role_to_user" "add_resource_role_to_user"))
-    (keywords . ("house" "room" "sensor" "appliance" "occupant"
-                 "type" "configuration" "energy-use" "address" "status"
-                 "value" "floor" "windows" "to_house"
-                 ;; auth
-                 "voice_print" "password"))
-    (types . ("pet" "child" "adult"    ;occupant types
-              "resting" "active"       ;occupant states
-              ;; room types
-              "kitchen" "closet" "diningroom" "livingroom" "hallway"
-              "bedroom" "familyroom" "garage" "bathroom"
-              ;; sensor types
-              "smoke_detector" "camera"
-              ;; appliance types
-              "thermostat" "window" "door" "light" "tv" "pandora"
-              "oven" "refrigerator" "ava"))
-    (cmds . ("voice_command"))))
 
 (defvar housemate-mode-font-lock-keywords
   (eval-when-compile
