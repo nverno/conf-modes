@@ -1,4 +1,4 @@
-;;; conf-modes.el --- Major modes for editing various configuration files
+;;; conf-modes.el --- Major modes for editing various configuration files -*- lexical-binding: t; -*-
 
 ;; Author: noah peart <noah.v.peart@gmail.com>
 ;; URL: http://github.com/nverno/conf-modes
@@ -14,15 +14,17 @@
 
 ;; Configuration modes:
 ;; 
-;; - `xkb-mode' for xkb configuration files
+;; - `xkb-mode'       => xkb configuration files
 ;;
-;; - `dotctags-mode' for .ctags files
+;; - `dotctags-mode'  => .ctags
 ;;
-;; - `indentpro-mode' for .indent.pro configs
+;; - `indentpro-mode' => .indent.pro
 ;;
-;; - `npmrc-mode' for .npmrc
+;; - `npmrc-mode'     => .npmrc
 ;;
-;; - various others
+;; - `authinfo-mode'  => .authinfo[.gpg]
+;;
+;; - etc.
 ;;
 ;; `conf-macros' generates company backends from calling some sort of
 ;;     "--help"-like output from a command-line program

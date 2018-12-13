@@ -5,11 +5,12 @@
 
 ## Configuration modes
 
-- `xkb-mode` for xkb configuration files
-- `dotctags-mode` for .ctags files
-- `indentpro-mode` for .indent.pro configs
-- `npmrc-mode` for .npmrc
-- various others
+- `xkb-mode`       => xkb configuration files
+- `dotctags-mode`  => .ctags
+- `indentpro-mode` => .indent.pro
+- `npmrc-mode`     => .npmrc
+- `authinfo-mode`  => .authinfo[.gpg]
+- etc.
 
 `conf-macros` generates company backends from calling some sort of
     "--help"-like output from a command-line program

@@ -1,4 +1,4 @@
-;;; dotctags-mode --- .ctags mode
+;;; dotctags-mode --- .ctags mode -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
