@@ -1,4 +1,4 @@
-# conf-modes - Major modes for editing various configuration files
+# conf-modes - Major modes for configuration files
 
 *Author:* noah peart <noah.v.peart@gmail.com><br>
 *URL:* [http://github.com/nverno/conf-modes](http://github.com/nverno/conf-modes)<br>
@@ -10,6 +10,7 @@
 - `indentpro-mode` => .indent.pro
 - `npmrc-mode`     => .npmrc
 - `authinfo-mode`  => .authinfo[.gpg]
+- `netrc-mode`     => .netrc[.gpg]
 - etc.
 
 `conf-macros` generates company backends from calling some sort of

@@ -1,11 +1,11 @@
-;;; authinfo-mode ---  -*- lexical-binding: t; -*-
+;;; netrc-mode ---  -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires: 
-;; Created: 12 December 2018
+;; Created: 13 December 2018
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -25,29 +25,34 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
+
+;; indentation and font-locking for netrc
+
 ;;; Code:
 
-(defvar authinfo-mode-keywords
-  (eval-when-compile
-    `((,(regexp-opt
-         '("machine" "login" "password" "account" "default" "macdef" "force" "port")
-         'paren)
-       . font-lock-keyword-face))))
+(require 'authinfo-mode)
+(require 'smie)
 
-(defvar authinfo-mode-syntax-table
-  (let ((tab (make-syntax-table)))
-    (modify-syntax-entry ?# "<" tab)
-    (modify-syntax-entry ?\n ">" tab)
-    tab))
-  
-;;;###autoload
-(define-derived-mode authinfo-mode prog-mode "Authinfo"
-  (setq-local font-lock-defaults '(authinfo-mode-keywords))
-  (setq-local comment-start "# ")
-  (setq-local comment-end ""))
+(defvar netrc-mode-indent-offset 8)
+
+(defconst netrc-mode-smie-grammar
+  (smie-prec2->grammar
+   (smie-precs->prec2
+    '((assoc "machine")))))
+
+(defun netrc-mode-smie-rules (kind token)
+  (pcase (cons kind token)
+    (`(:elem . basic) netrc-mode-indent-offset)
+    (`(:elem . args) 0)
+    (`(:list-intro . ,(or `"\n" `"")) t)))
 
 ;;;###autoload
-(add-hook 'auto-mode-alist '("[_.]authinfo\\(\\.gpg\\)?\\'" . authinfo-mode))
+(define-derived-mode netrc-mode authinfo-mode
+  (modify-syntax-entry ?\. "_")
+  (smie-setup netrc-mode-smie-grammar #'netrc-mode-smie-rules))
 
-(provide 'authinfo-mode)
-;;; authinfo-mode.el ends here
+;;;###autoload
+(add-hook 'auto-mode-alist '("[_.]netrc\\(\.gpg\\)?\\'" . netrc-mode))
+
+(provide 'netrc-mode)
+;;; netrc-mode.el ends here

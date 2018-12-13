@@ -1,4 +1,4 @@
-;;; conf-modes.el --- Major modes for editing various configuration files -*- lexical-binding: t; -*-
+;;; conf-modes.el --- Major modes for configuration files -*- lexical-binding: t; -*-
 
 ;; Author: noah peart <noah.v.peart@gmail.com>
 ;; URL: http://github.com/nverno/conf-modes
@@ -23,6 +23,8 @@
 ;; - `npmrc-mode'     => .npmrc
 ;;
 ;; - `authinfo-mode'  => .authinfo[.gpg]
+;;
+;; - `netrc-mode'     => .netrc[.gpg]
 ;;
 ;; - etc.
 ;;
