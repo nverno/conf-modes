@@ -41,7 +41,7 @@
     tab))
   
 ;;;###autoload
-(define-derived-mode authinfo-mode prog-mode "Authinfo"
+(define-derived-mode authinfo-mode fundamental-mode "Authinfo"
   (setq-local font-lock-defaults '(authinfo-mode-keywords))
   (setq-local comment-start "# ")
   (setq-local comment-end ""))
