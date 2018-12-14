@@ -38,13 +38,14 @@
 (defconst netrc-mode-smie-grammar
   (smie-prec2->grammar
    (smie-precs->prec2
-    '((assoc "machine")))))
+    '((assoc "machine") (assoc "\n")))))
 
 (defun netrc-mode-smie-rules (kind token)
   (pcase (cons kind token)
-    (`(:elem . basic) netrc-mode-indent-offset)
-    (`(:elem . args) 0)
-    (`(:list-intro . ,(or `"\n" `"")) t)))
+    (`(:elem . basic))
+    (`(:elem . args) (smie-indent-keyword "\n"))
+    (`(:before . "\n")
+     (- netrc-mode-indent-offset (current-column)))))
 
 ;;;###autoload
 (define-derived-mode netrc-mode authinfo-mode
