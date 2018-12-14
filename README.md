@@ -11,6 +11,7 @@
 - `npmrc-mode`     => .npmrc
 - `authinfo-mode`  => .authinfo[.gpg]
 - `netrc-mode`     => .netrc[.gpg]
+- `ssh-config-mode` => .sss/config | ssh_config
 - etc.
 
 `conf-macros` generates company backends from calling some sort of

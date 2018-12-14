@@ -75,6 +75,28 @@
     (`(:before . "\n")
      (- ssh-config-indent-offset (current-column)))))
 
+(defun ssh-config-help (&optional key)
+  "Show man page for ssh_config.
+Search for KEY or symbol at point if possible."
+  (interactive)
+  (setq key (or key (thing-at-point 'symbol)))
+  (man "ssh_config")
+  (sit-for 0.1)                         ;man doesn't return buffer or process
+  (pop-to-buffer "*Man ssh_config*")
+  (Man-goto-section "DESCRIPTION")
+  (when key
+    (let ((pnt (point))
+          (re (concat "^\\s-*" (regexp-quote key))))
+      (catch 'done
+        (while (re-search-forward re)
+          (and (equal '(face Man-overstrike) (text-properties-at (1- (point))))
+               (throw 'done t)))))))
+
+(defvar ssh-config-mode-map
+  (let ((km (make-sparse-keymap)))
+    (define-key km (kbd "M-?") #'ssh-config-help)
+    km))
+
 ;;;###autoload
 (define-derived-mode ssh-config-mode fundamental-mode "SSH"
   (modify-syntax-entry ?# "<")
