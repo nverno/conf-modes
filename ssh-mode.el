@@ -68,15 +68,17 @@
 (defconst ssh-config-grammar
   (smie-prec2->grammar
    (smie-precs->prec2
-    '((assoc "Host" "host") (assoc "\n")))))
+    '((assoc "Host" "host" "") (assoc "\n")))))
 
 (defun ssh-config-smie-rules (kind token)
   (pcase (cons kind token)
     (`(:elem . basic))
     (`(:elem . args) (smie-indent-keyword "\n"))
     (`(:before . "\n")
-     (- ssh-config-indent-offset (current-column)))))
+     (- ssh-config-indent-offset (current-column)))
+    (`(:list-intro . "") 0)))
 
+(declare-function Man-goto-section "man")
 (defun ssh-config-help (&optional key)
   "Show man page for ssh_config.
 Search for KEY or symbol at point if possible."
