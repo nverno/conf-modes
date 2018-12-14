@@ -59,7 +59,9 @@
            "StreamLocalBindMask" "StreamLocalBindUnlink" "StrictHostKeyChecking"
            "TCPKeepAlive" "Tunnel" "TunnelDevice" "Unsupported" "UpdateHostkeys"
            "UsePrivilegedPort" "User" "UserKnownHostsFile" "VerifyHostKeyDNS"
-           "VisualHostKey" "XAuthLocation")
+           "VisualHostKey" "XAuthLocation"
+           ;; openssh-clien additions
+           "SendEnv" "HashKnownHosts" "GSSAPIAuthentication")
          'paren)
        (1 font-lock-keyword-face)))))
 
@@ -85,8 +87,7 @@ Search for KEY or symbol at point if possible."
   (pop-to-buffer "*Man ssh_config*")
   (Man-goto-section "DESCRIPTION")
   (when key
-    (let ((pnt (point))
-          (re (concat "^\\s-*" (regexp-quote key))))
+    (let ((re (concat "^\\s-*" (regexp-quote key))))
       (catch 'done
         (while (re-search-forward re)
           (and (equal '(face Man-overstrike) (text-properties-at (1- (point))))
