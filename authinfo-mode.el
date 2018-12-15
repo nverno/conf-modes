@@ -30,7 +30,8 @@
 (defvar authinfo-mode-keywords
   (eval-when-compile
     `((,(regexp-opt
-         '("machine" "login" "password" "account" "default" "macdef" "force" "port")
+         '("machine" "login" "password" "account" "default" "macdef" "force" "port"
+           "protocol")
          'paren)
        . font-lock-keyword-face))))
 
