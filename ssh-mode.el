@@ -76,7 +76,7 @@
     (`(:elem . args) (smie-indent-keyword "\n"))
     (`(:before . "\n")
      (- ssh-config-indent-offset (current-column)))
-    (`(:list-intro . "") 0)))
+    (`(:list-intro . ,(or `"" `"Host" `"host")) 0)))
 
 (declare-function Man-goto-section "man")
 (defun ssh-config-help (&optional key)
