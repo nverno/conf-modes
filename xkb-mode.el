@@ -1,4 +1,4 @@
-;;; xkb-mode --- major mode for xkb keys
+;;; xkb-mode --- major mode for xkb keys -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
@@ -76,10 +76,9 @@
 
 ;;;###autoload
 (define-derived-mode xkb-mode  prog-mode "xkb"
-  (setq-local comment-start "//")
+  (setq-local comment-start "// ")
   (setq-local comment-end "")
-  (setq-local font-lock-defaults
-              '(xkb-font-lock-keywords nil nil nil))
+  (setq-local font-lock-defaults '(xkb-font-lock-keywords nil nil nil))
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload
