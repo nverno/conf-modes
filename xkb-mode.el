@@ -1,7 +1,8 @@
-;;; xkb-mode --- major mode for xkb keys -*- lexical-binding: t; -*-
+;;; xkb-mode.el --- major mode for XKB configs -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
+;; Last modified: <2019-01-15 00:42:07>
 ;; Package-Requires: 
 ;; Copyright (C) 2016, Noah Peart, all rights reserved.
 ;; Created:  7 November 2016
@@ -37,29 +38,48 @@
 (defvar xkb-indent-offset 4 "Default indentaion offset for `xkb-mode'.")
 
 ;; probably missing lots, just added some
+;; old, but has a bunch: https://github.com/vim/vim/runtime/syntax/xkb.vim
 (defvar xkb-font-lock-keywords
   (eval-when-compile
-    (let ((variants 
-           '("default" "partial" "hidden" "alphanumeric_keys"
-             "modifier_keys" "keypad_keys" "function_keys"
-             "virtual_modifiers" "alternate_group"))
-          (xkb '("xkb_symbols" "xkb_geometry" "xkb_compatibility"
-                 "xkb_keycodes" "xkb_types"))
-          (keywords '("key" "keys" "top" "left" "right" "interpret"
-                      "group" "indicator" "row" "include" "name" "type"
-                      "text" "outline" "solid" "augment" "section" "shape"
-                      "override" "preserve" "map" "level_name" "alias")))
+    (let* ((preproc '("augment" "include" "replace"))
+           (modif '("override" "replace"))
+           (tmodif '("default" "hidden" "partial" "virtual"))
+           (kws '("xkbIdentifier" "action" "actions" "affect" "alias"
+                  "allowExplicit" "approx" "baseColor" "button" "clearLocks"
+                  "color" "controls" "cornerRadius" "count" "ctrls"
+                  "description" "driveskbd" "font" "fontSize" "gap" "group"
+                  "groups" "height" "indicator" "indicatorDrivesKeyboard"
+                  "interpret" "key" "keys" "labelColor" "latchToLock"
+                  "latchMods" "left" "level_name" "map" "maximum" "minimum"
+                  "modifier_map" "modifiers" "name" "offColor" "onColor"
+                  "outline" "preserve" "priority" "right" "repeat" "row" "section"
+                  "section" "setMods" "shape" "slant" "solid" "symbols" "text"
+                  "top" "type" "useModMapMods" "virtualModifier" "virtualMods"
+                  "virtual_modifiers" "weight" "whichModState" "width"))
+           (funcs '("xkbFunction" "AnyOf" "ISOLock" "LatchGroup" "LatchMods"
+                    "LockControls" "LockGroup" "LockMods" "LockPointerButton"
+                    "MovePtr" "NoAction" "PointerButton" "SetControls"
+                    "SetGroup" "SetMods" "SetPtrDflt" "Terminate"))
+           (sect '("alphanumeric_keys" "alternate_group" "function_keys"
+                   "keypad_keys" "modifier_keys" "xkb_compatibility"
+                   "xkb_geometry" "xkb_keycodes" "xkb_keymap" "xkb_semantics"
+                   "xkb_symbols" "xkb_types")))
       `(("<\\([^>]+\\)>" (1 font-lock-variable-name-face))
-        ("\\([A-Za-z.]+\\)\\s-*=" (1 font-lock-keyword-face))
-        (,(re-opt variants) (1 font-lock-function-name-face))
-        (,(re-opt xkb) (1 font-lock-builtin-face))
-        (,(re-opt keywords) (1 font-lock-keyword-face))))))
+        ("\\([A-Za-z._0-9]+\\)[\]\[0-9:]*\\([0-9A-Za-z._]*\\)\\s-*="
+         (1 font-lock-variable-name-face)
+         (2 font-lock-variable-name-face))
+        (,(re-opt (append preproc modif tmodif)) (1 font-lock-preprocessor-face))
+        (,(re-opt kws) (1 font-lock-keyword-face))
+        (,(re-opt funcs) (1 font-lock-function-name-face))
+        (,(re-opt sect) (1 font-lock-type-face))
+        ;; special thingies
+        ("\\(?:true\\|false\\|[-*+!:]\\)" . font-lock-constant-face)))))
 
 (defvar xkb-mode-syntax-table
   (let ((st (make-syntax-table)))
     (modify-syntax-entry ?\n ">" st)
     (modify-syntax-entry ?/ ". 12" st)
-    (modify-syntax-entry ?_ "." st)
+    (modify-syntax-entry ?_ "w" st)
     st))
 
 (defconst xkb-smie-grammar
@@ -73,6 +93,9 @@
     (`(:elem . args) 0)
     (`(:before . "{") (smie-rule-parent))
     (`(:list-intro . ,(or `"\n" `"" `";" `",")) t)))
+
+;; (defvar xkb-imenu-expression
+;;   '((nil )))
 
 ;;;###autoload
 (define-derived-mode xkb-mode  prog-mode "xkb"
