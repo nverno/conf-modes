@@ -1,11 +1,12 @@
-;;; authinfo-mode ---  -*- lexical-binding: t; -*-
+;;; authinfo-mode.el --- authinfo major-mode -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
+;; Created: 12 December 2018
+;; Last modified: <2019-01-16 18:38:18>
 ;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires: 
-;; Created: 12 December 2018
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -25,6 +26,7 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
+;; Basic syntax / font-locking for .authinfo
 ;;; Code:
 
 (defvar authinfo-mode-keywords

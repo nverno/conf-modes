@@ -1,9 +1,10 @@
-;;; npmrc-mode --- npmrc-mode -*- lexical-binding: t; -*-
+;;; npmrc-mode.el --- Major mode for .npmrc -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
+;; Last modified: <2019-01-16 17:40:51>
 ;; Package-Requires: '(company)
 ;; Created: 17 August 2018
 
@@ -25,6 +26,7 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
+;; Major mode and completion for .npmrc
 ;;; Code:
 (eval-when-compile
   (require 'cl-lib)

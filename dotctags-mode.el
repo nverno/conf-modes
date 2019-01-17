@@ -1,10 +1,13 @@
-;;; dotctags-mode --- .ctags mode -*- lexical-binding: t; -*-
+;;; dotctags-mode.el --- Major mode and completion for .ctags -*- lexical-binding: t; -*-
+
+;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
-;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires: 
-;; Copyright (C) 2016, Noah Peart, all rights reserved.
 ;; Created: 29 September 2016
+;; Last modified: <2019-01-16 18:39:23>
+;; URL: https://github.com/nverno/conf-modes
+;; Package-Requires: (("company"))
+;; Keywords: languages tools matching
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -24,6 +27,11 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
+
+;; Major mode for .ctags configs and company completion backend.
+;; The completion is configured for universal-ctags, not ctags bundled with
+;; emacs.
+
 ;;; Code:
 (eval-when-compile
   (require 'cl-lib)
@@ -63,6 +71,7 @@
 ;; ------------------------------------------------------------
 ;;; Completion
 
+;; this is configured for universal-ctags, not emacs ctags
 (company-conf dotctags
               :program "ctags"
               :keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)"

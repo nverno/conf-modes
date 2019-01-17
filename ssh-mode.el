@@ -1,9 +1,10 @@
-;;; ssh-mode ---  -*- lexical-binding: t; -*-
+;;; ssh-mode.el --- Major mode for SSH configs -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
+;; Last modified: <2019-01-16 17:41:58>
 ;; Package-Requires: 
 ;; Created: 14 December 2018
 
@@ -25,6 +26,7 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
+;; Major mode for SSH config files: font-lock, syntax, indentation, help
 ;;; Code:
 (require 'smie)
 

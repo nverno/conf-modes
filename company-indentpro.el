@@ -1,10 +1,13 @@
-;;; company-indentpro --- Company backend for Emacs autocompletion of .indent.pro files.
+;;; company-indentpro.el --- Company backend .indent.pro files. -*- lexical-binding: t; -*-
+
+;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
-;; URL: https://github.com/nverno/company-indentpro
-;; Package-Requires: ((company "0.8.0") (cl-lib "0.5.0"))
-;; Copyright (C) 2016, Noah Peart, all rights reserved.
 ;; Created:  6 August 2016
+;; Last modified: <2019-01-16 18:37:41>
+;; URL: https://github.com/nverno/conf-modes
+;; Package-Requires: ((company))
+;; Keywords: languages tools matching
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -22,10 +25,8 @@
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
-
+;;; History:
 ;;; Commentary:
-
-;;; Description:
 
 ;; Completion support (`company-mode') backend for .indent.pro files.
 
@@ -69,8 +70,6 @@
   :group 'company
   :group 'indentpro)
 
-;; ------------------------------------------------------------
-;;* User variables
 (defcustom company-indentpro-start-regexp
   "^OPTIONS"
   "Regex determining where to start parsing options."
@@ -164,7 +163,6 @@ output.")
 (defun company-indentpro-strip-props (arg)
   (substring-no-properties arg))
 
-
 ;;;###autoload
 (defun company-indentpro (command &optional arg &rest _args)
   "Indent pro backend for `company-mode'."
@@ -179,5 +177,4 @@ output.")
     (candidates (company-indentpro-candidates arg))))
 
 (provide 'company-indentpro)
-
 ;;; company-indentpro.el ends here

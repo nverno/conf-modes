@@ -1,9 +1,10 @@
-;;; netrc-mode ---  -*- lexical-binding: t; -*-
+;;; netrc-mode.el --- major mode for .netrc files -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
+;; Last modified: <2019-01-16 17:39:38>
 ;; Package-Requires: 
 ;; Created: 13 December 2018
 
@@ -26,14 +27,15 @@
 
 ;;; Commentary:
 
-;; indentation and font-locking for netrc
+;; Major mode for .netrc files: syntax, font-locking, and indentation
 
 ;;; Code:
 
 (require 'authinfo-mode)
 (require 'smie)
 
-(defvar netrc-mode-indent-offset 8)
+(defvar netrc-mode-indent-offset 8
+  "Indentation offset for `netrc-mode', defaults to align with 'machine '.")
 
 (defconst netrc-mode-smie-grammar
   (smie-prec2->grammar

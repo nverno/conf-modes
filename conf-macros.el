@@ -1,10 +1,12 @@
-;;; conf-macros --- generate company completion backends from docs -*- lexical-binding: t; no-byte-compile: t -*-
+;;; conf-macros.el --- Generate company completion backends from docs -*- lexical-binding: t; -*-
+
+;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
+;; Created:  1 October 2016
+;; Last modified: <2019-01-16 18:38:01>
 ;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires: 
-;; Copyright (C) 2016, Noah Peart, all rights reserved.
-;; Created:  1 October 2016
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -25,14 +27,16 @@
 
 ;;; Commentary:
 
-;;; Description:
+;; Generates company backends for conf-modes from program help output
+;; that lists available options
+
 ;;; Code:
 (require 'cl-lib)
 
 (cl-defmacro company-conf (name
                            &key
-                           program
-                           (args)       ;optional args to pass to program
+                           program            ;call this program to produce help
+                           (args '("--help")) ;program args
                            (keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)")
                            (keyword-re-pos
                             '((candidate . 1)
@@ -51,7 +55,7 @@ completions candidate and its annotation."
        (defun ,keywords nil
          (or ,keywords
              (setq ,keywords
-                   (let ((lines (process-lines ,program ,@(or args '("--help")))))
+                   (let ((lines (process-lines ,program ,@args)))
                      (cl-loop for line in lines
                         when (string-match ,keyword-re line)
                         collect (propertize

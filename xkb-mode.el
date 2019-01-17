@@ -1,11 +1,12 @@
 ;;; xkb-mode.el --- major mode for XKB configs -*- lexical-binding: t; -*-
 
+;; This is free and unencumbered software released into the public domain.
+
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
-;; URL: https://github.com/nverno/conf-mode
-;; Last modified: <2019-01-15 00:42:07>
-;; Package-Requires: 
-;; Copyright (C) 2016, Noah Peart, all rights reserved.
 ;; Created:  7 November 2016
+;; Last modified: <2019-01-16 18:39:54>
+;; URL: https://github.com/nverno/conf-mode
+;; Package-Requires: 
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,8 +27,8 @@
 
 ;;; Commentary:
 
-;; Major mode for xbk configuration files:
-;; Does the basics: indentation / font-lock / syntax etc.
+;; Major mode for XKB files: syntax, font-lock, and indentation
+;; Vim syntax: https://github.com/vim/vim/tree/master/runtime/syntax
 
 ;;; Code:
 (require 'smie)
@@ -37,8 +38,7 @@
 
 (defvar xkb-indent-offset 4 "Default indentaion offset for `xkb-mode'.")
 
-;; probably missing lots, just added some
-;; old, but has a bunch: https://github.com/vim/vim/runtime/syntax/xkb.vim
+;; probably missing stuff
 (defvar xkb-font-lock-keywords
   (eval-when-compile
     (let* ((preproc '("augment" "include" "replace"))
@@ -101,7 +101,7 @@
 (define-derived-mode xkb-mode  prog-mode "xkb"
   (setq-local comment-start "// ")
   (setq-local comment-end "")
-  (setq-local font-lock-defaults '(xkb-font-lock-keywords nil nil nil))
+  (setq-local font-lock-defaults '(xkb-font-lock-keywords))
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload

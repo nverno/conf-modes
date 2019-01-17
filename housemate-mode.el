@@ -1,4 +1,4 @@
-;;; housemate-mode ---  -*- lexical-binding: t; -*-
+;;; housemate-mode.el --- DSL -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 

@@ -1,12 +1,11 @@
-;;; company-indentpro.el --- Emacs mdoe and company completion backend for .indent.pro files. -*- lexical-binding: t; -*-
+;;; company-indentpro.el --- Major mode and completion backend for .indent.pro files. -*- lexical-binding: t; -*-
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/company-indent-pro
+;; Last modified: <2019-01-16 18:27:55>
 ;; Package-Requires:
-;; Copyright (C) 2016, Noah Peart, all rights reserved.
 ;; Created:  5 August 2016
-
-;;; Commentary:
+;; Keywords: languages tools matching
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -25,9 +24,9 @@
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
 
-;; Description:
+;;; Commentary:
 
-;; Simple emacs major mode for editing .indent.pro files.  
+;; Major mode for editing .indent.pro files.  
 ;; Completion support in company-indentpro.el
 ;;
 ;; It also adds font-locking and c/c++ comment syntax.
@@ -51,20 +50,12 @@
   "Emacs major mode for .indent.pro files."
   :group 'languages)
 
-;; ------------------------------------------------------------
-;;* User Variables
 (defcustom indentpro-use-company (featurep 'company)
   "Use company completion backend.  When true, pushes
  `company-indentpro' to local `company-backends'."
   :group 'indentpro
   :type 'boolean)
 
-(defface indentpro-keywords-face
-  '((t :inherit font-lock-type-face))
-  "Face for options.")
-
-;; ------------------------------------------------------------
-;;* Internal
 (defvar indentpro-common-styles
   '((gnu "-nbad" "-bap" "-nbc" "-bbo" "-bl" "-bli2" "-bls" "-ncdb" "-nce"
          "-cp1" "-cs" "-di2 -ndj" "-nfc1" "-nfca" "-hnl" "-i2" "-ip5"
@@ -85,12 +76,12 @@
            "-ts8" "-il1")))
 
 (defvar indentpro-font-lock-keywords
-  '(("^-[-A-Za-z0-9]+" . 'indentpro-keywords-face)))
+  '(("^-[-A-Za-z0-9]+" . font-lock-type-face)))
 
 ;; ------------------------------------------------------------
-;;* Mode
+;;; Major Mode
 
-;;** Syntax / for c/c++ style comments
+;; Syntax / for c/c++ style comments
 (defvar indentpro-mode-syntax-table
   (let ((st (make-syntax-table)))
     (modify-syntax-entry ?\* ". 23" st)
@@ -105,7 +96,7 @@
   (setq-local comment-start "/* ")
   (setq-local comment-start-skip "\\(//+\\|/\\*+\\)\\s *")
   (setq-local comment-end " */")
-  (setq-local font-lock-defaults `(indentpro-font-lock-keywords))
+  (setq-local font-lock-defaults '(indentpro-font-lock-keywords))
   
   ;; Enable company-indentpro backend
   (when (and (featurep 'company)
