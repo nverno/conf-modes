@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created:  7 November 2016
-;; Last modified: <2019-01-16 18:39:54>
+;; Last modified: <2019-01-26 03:02:14>
 ;; URL: https://github.com/nverno/conf-mode
 ;; Package-Requires: 
 
@@ -44,41 +44,50 @@
     (let* ((preproc '("augment" "include" "replace"))
            (modif '("override" "replace"))
            (tmodif '("default" "hidden" "partial" "virtual"))
-           (kws '("xkbIdentifier" "action" "actions" "affect" "alias"
-                  "allowExplicit" "approx" "baseColor" "button" "clearLocks"
-                  "color" "controls" "cornerRadius" "count" "ctrls"
-                  "description" "driveskbd" "font" "fontSize" "gap" "group"
-                  "groups" "height" "indicator" "indicatorDrivesKeyboard"
-                  "interpret" "key" "keys" "labelColor" "latchToLock"
-                  "latchMods" "left" "level_name" "map" "maximum" "minimum"
-                  "modifier_map" "modifiers" "name" "offColor" "onColor"
-                  "outline" "preserve" "priority" "right" "repeat" "row" "section"
+           (kws '("accel" "accelerate" "action" "actions" "affect"
+                  "alias" "allowExplicit" "approx" "baseColor" "button"
+                  "clearLocks" "clearModifiers" "clearMods" "color" "controls"
+                  "cornerRadius" "count" "ctrls" "data" "description" "device"
+                  "driveskbd" "font" "fontSize" "gap" "generateKeyEvent"
+                  "genKeyEvent" "group" "groups" "height" "indicator"
+                  "indicatorDrivesKeyboard" "interpret" "key" "keyCode"
+                  "keys" "labelColor" "latchMods" "latchToLock" "left"
+                  "level_name" "map" "maximum" "minimum" "modifier_map" "modifiers"
+                  "name" "offColor" "onColor" "outline" "preserve" "priority"
+                  "repeat" "report" "right" "row" "same" "sameServer" "screen"
                   "section" "setMods" "shape" "slant" "solid" "symbols" "text"
-                  "top" "type" "useModMapMods" "virtualModifier" "virtualMods"
-                  "virtual_modifiers" "weight" "whichModState" "width"))
-           (funcs '("xkbFunction" "AnyOf" "ISOLock" "LatchGroup" "LatchMods"
-                    "LockControls" "LockGroup" "LockMods" "LockPointerButton"
-                    "MovePtr" "NoAction" "PointerButton" "SetControls"
-                    "SetGroup" "SetMods" "SetPtrDflt" "Terminate"))
+                  "top" "type" "useModMapMods" "value" "virtual_modifiers"
+                  "virtualModifier" "virtualMods" "weight" "whichModState"
+                  "width" "xkbIdentifier"))
+           (funcs '("ActionMessage" "AnyOf" "AllOf" "Exactly" "AnyOfOrNone" "DeviceButton" "DeviceValuator"
+                    "ISOLock" "LatchGroup" "LatchMods" "LockControls"
+                    "LockDeviceButton" "LockGroup" "LockMods"
+                    "LockPointerButton" "Message" "MessageAction" "MovePtr"
+                    "NoAction" "PointerButton" "Private" "RedirectKey"
+                    "SetControls" "SetGroup" "SetMods" "SetPointerDefault"
+                    "SetPtrDflt" "SwitchScreen" "Terminate" "TerminateServer"
+                    "xkbFunction"))
            (sect '("alphanumeric_keys" "alternate_group" "function_keys"
                    "keypad_keys" "modifier_keys" "xkb_compatibility"
                    "xkb_geometry" "xkb_keycodes" "xkb_keymap" "xkb_semantics"
                    "xkb_symbols" "xkb_types")))
       `(("<\\([^>]+\\)>" (1 font-lock-variable-name-face))
-        ("\\([A-Za-z._0-9]+\\)[\]\[0-9:]*\\([0-9A-Za-z._]*\\)\\s-*="
-         (1 font-lock-variable-name-face)
-         (2 font-lock-variable-name-face))
         (,(re-opt (append preproc modif tmodif)) (1 font-lock-preprocessor-face))
         (,(re-opt kws) (1 font-lock-keyword-face))
         (,(re-opt funcs) (1 font-lock-function-name-face))
         (,(re-opt sect) (1 font-lock-type-face))
+        ("\\([A-Za-z._0-9+]*\\)[\]\[0-9:]*\\([+0-9A-Za-z._]*\\)\\s-*="
+         (1 font-lock-variable-name-face)
+         (2 font-lock-variable-name-face))
         ;; special thingies
-        ("\\(?:true\\|false\\|[-*+!:]\\)" . font-lock-constant-face)))))
+        ("\\(?:[Tt]rue\\|[Ff]alse\\|[-*+!:]\\)" . font-lock-constant-face)))))
 
 (defvar xkb-mode-syntax-table
   (let ((st (make-syntax-table)))
     (modify-syntax-entry ?\n ">" st)
     (modify-syntax-entry ?/ ". 12" st)
+    (modify-syntax-entry ?+ "." st)
+    (modify-syntax-entry ?= "." st)
     (modify-syntax-entry ?_ "w" st)
     st))
 
@@ -105,7 +114,7 @@
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("/xkb/.*" . xkb-mode))
+(add-to-list 'auto-mode-alist '("\\(/xkb/.*\\|\.[Xx]kbmap\\'\\)" . xkb-mode))
 
 (provide 'xkb-mode)
 ;;; xkb-mode.el ends here
