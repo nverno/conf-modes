@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created:  7 November 2016
-;; Last modified: <2019-01-26 03:02:14>
+;; Last modified: <2019-01-26 03:30:56>
 ;; URL: https://github.com/nverno/conf-mode
 ;; Package-Requires: 
 
@@ -59,11 +59,11 @@
                   "top" "type" "useModMapMods" "value" "virtual_modifiers"
                   "virtualModifier" "virtualMods" "weight" "whichModState"
                   "width" "xkbIdentifier"))
-           (funcs '("ActionMessage" "AnyOf" "AllOf" "Exactly" "AnyOfOrNone" "DeviceButton" "DeviceValuator"
-                    "ISOLock" "LatchGroup" "LatchMods" "LockControls"
-                    "LockDeviceButton" "LockGroup" "LockMods"
-                    "LockPointerButton" "Message" "MessageAction" "MovePtr"
-                    "NoAction" "PointerButton" "Private" "RedirectKey"
+           (funcs '("ActionMessage" "AllOf" "AnyOf" "AnyOfOrNone" "DeviceButton"
+                    "DeviceValuator" "Exactly" "ISOLock" "LatchGroup"
+                    "LatchMods" "LockControls" "LockDeviceButton" "LockGroup"
+                    "LockMods" "LockPointerButton" "Message" "MessageAction"
+                    "MovePtr" "NoAction" "PointerButton" "Private" "RedirectKey"
                     "SetControls" "SetGroup" "SetMods" "SetPointerDefault"
                     "SetPtrDflt" "SwitchScreen" "Terminate" "TerminateServer"
                     "xkbFunction"))
@@ -103,18 +103,20 @@
     (`(:before . "{") (smie-rule-parent))
     (`(:list-intro . ,(or `"\n" `"" `";" `",")) t)))
 
-;; (defvar xkb-imenu-expression
-;;   '((nil )))
+(defvar xkb-imenu-expression
+  '((nil "xkb_\\([a-z]+\\s-+[^{\n \t]*\\)" 1)))
 
 ;;;###autoload
 (define-derived-mode xkb-mode  prog-mode "xkb"
   (setq-local comment-start "// ")
   (setq-local comment-end "")
   (setq-local font-lock-defaults '(xkb-font-lock-keywords))
+  (setq imenu-generic-expression xkb-imenu-expression)
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\(/xkb/.*\\|\.[Xx]kbmap\\'\\)" . xkb-mode))
+(add-to-list 'auto-mode-alist
+             '("\\(/xkb/.*\\|\.[Xx]kb\\(?:map\\)?\\'\\)" . xkb-mode))
 
 (provide 'xkb-mode)
 ;;; xkb-mode.el ends here
