@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
-;; Last modified: <2019-01-16 17:45:54>
+;; Last modified: <2019-01-29 00:11:12>
 ;; Package-Requires: 
 ;; Created:  7 November 2016
 
@@ -31,15 +31,6 @@
 ;; See emacs wiki https://www.emacswiki.org/emacs/XModMapMode
 
 ;;; Code:
-(defun xmodmap-xev ()
-  (interactive)
-  (let ((buff (get-buffer-create "*xrev*")))
-    (pop-to-buffer buff)
-    (set-process-sentinel
-     (start-process "xev" buff "xev")
-     #'(lambda (p _m)
-         (when (zerop (process-exit-status p))
-           (kill-buffer buff))))))
 
 ;;;###autoload
 (define-generic-mode 'xmodmap-mode

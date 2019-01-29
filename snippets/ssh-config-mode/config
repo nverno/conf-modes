@@ -1,9 +1,0 @@
-# -*- mode: snippet -*-
-# name: config
-# key: config
-# --
-Host ${1:github}
-     User ${2:git}
-     HostName ${3:ssh.github.com}
-     Port ${4:443}
-     IdentityFile ${5:~/.ssh/id_rsa}

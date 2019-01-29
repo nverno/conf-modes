@@ -1,7 +1,7 @@
 ;;; conf-modes.el --- Major modes for configuration files -*- lexical-binding: t; -*-
 
 ;; Author: noah peart <noah.v.peart@gmail.com>
-;; Last modified: <2019-01-28 18:55:06>
+;; Last modified: <2019-01-29 00:14:37>
 ;; URL: http://github.com/nverno/conf-modes
 ;; Package-Requires: 
 ;; Keywords: languages
@@ -47,9 +47,6 @@
 ;;     "--help"-like output from a command-line program
 
 ;;; Code:
-(eval-when-compile
-  (require 'nvp-macro))
-(nvp-package-define-root :snippets t)
 
 (provide 'conf-modes)
 
