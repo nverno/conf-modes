@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
-;; Last modified: <2019-01-29 00:11:12>
+;; Last modified: <2019-01-31 00:20:02>
 ;; Package-Requires: 
 ;; Created:  7 November 2016
 
@@ -38,10 +38,6 @@
   '("add" "clear" "keycode" "keysym" "pointer" "remove")
   nil
   '("[xX]modmap\\(rc\\)?\\'")
-  (list
-   (function
-    (lambda ()
-      (local-set-key (kbd "C-c C-c") 'xmodmap-xev))))
   "Simple mode for xmodmap files.")
 
 ;;;###autoload

@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created: 12 December 2018
-;; Last modified: <2019-01-16 18:38:18>
+;; Last modified: <2019-01-31 00:22:59>
 ;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires: 
 
@@ -44,7 +44,7 @@
     tab))
   
 ;;;###autoload
-(define-derived-mode authinfo-mode fundamental-mode "Authinfo"
+(define-derived-mode authinfo-mode prog-mode "Authinfo"
   (setq-local font-lock-defaults '(authinfo-mode-keywords))
   (setq-local comment-start "# ")
   (setq-local comment-end ""))

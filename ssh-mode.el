@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Last modified: <2019-01-16 17:41:58>
+;; Last modified: <2019-01-31 00:21:56>
 ;; Package-Requires: 
 ;; Created: 14 December 2018
 
@@ -103,7 +103,7 @@ Search for KEY or symbol at point if possible."
     km))
 
 ;;;###autoload
-(define-derived-mode ssh-config-mode fundamental-mode "SSH"
+(define-derived-mode ssh-config-mode prog-mode "SSH"
   (modify-syntax-entry ?# "<")
   (modify-syntax-entry ?\n ">")
   (modify-syntax-entry ?\. "_")
