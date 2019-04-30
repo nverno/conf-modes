@@ -2,5 +2,5 @@
 (source melpa)
 
 (development
- (depends-on "company")
- (depends-on "ert-runner"))
+ (depends-on "ert-runner")
+ (depends-on "company"))
