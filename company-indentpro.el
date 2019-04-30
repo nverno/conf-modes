@@ -1,12 +1,11 @@
-;;; company-indentpro.el --- Company backend .indent.pro files. -*- lexical-binding: t; -*-
+;;; company-indentpro.el --- Company backend for .indent.pro -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created:  6 August 2016
-;; Last modified: <2019-01-16 18:37:41>
 ;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires: ((company))
+;; Package-Requires:
 ;; Keywords: languages tools matching
 
 ;; This file is not part of GNU Emacs.
@@ -25,7 +24,7 @@
 ;; along with this program; see the file COPYING.  If not, write to
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
-;;; History:
+
 ;;; Commentary:
 
 ;; Completion support (`company-mode') backend for .indent.pro files.
@@ -38,8 +37,7 @@
 
 ;;; Installation:
 
-;; See [indentpro-mode](https://github.com/nverno/indentpro-mode) for
-;; simple accompanying major mode.
+;; Requires 'indent' application to be installed.
 
 ;; Install `company-mode' and add this file to `load-path'.
 ;; Then either compile/create autoloads and load autoloads files,
@@ -57,10 +55,6 @@
 ;;                    '((company-indentpro company-dabbrev-code)
 ;;                       company-dabbrev))))
 ;; ```
-
-;;; Example:
-
-;; ![test](test.png)
 
 ;;; Code:
 (require 'company)
@@ -82,13 +76,8 @@
   :group 'company-indentpro
   :type 'regex)
 
-;; ------------------------------------------------------------
-;;* Internal
 (defvar company-indentpro-modes '(indentpro-mode)
   "Modes to activate `company-indentpro'.")
-
-(defvar company-indentpro-candidates-list nil
-  "Cache completion candidates.")
 
 (defvar company-indentpro-regexp
   (eval-when-compile
@@ -97,43 +86,43 @@
     "\\s-*\\(-[-A-Za-z]+\\)?" ; long option
     "\n?\\s-*\\([^\n]+\\)"    ; desciption
     ))
-  "Regex to capture long and short options from `man indent' 
-output.")
+  "Regex to capture long and short options from `man indent' output.")
 
 
 ;; ------------------------------------------------------------
-;;* Parse output
+;;; Parse output
 
-(defun company-indentpro-build-list ()
-  "Build candidate list."
-  (let (res short long end)
-    (with-temp-buffer
-      (call-process "man" nil t nil "indent")
-      (goto-char (point-min))
-      (re-search-forward company-indentpro-start-regexp)
-      (save-excursion
-        (setq end (re-search-forward company-indentpro-end-regexp)))
-      (forward-line 1)
-      (while (not (or (eobp)
-                      (< end (point))))
-        (when (re-search-forward company-indentpro-regexp end t)
-          (setq short (match-string-no-properties 1))
-          (put-text-property
-           0 1 'meta (match-string-no-properties 3) short)
-          (setq long (match-string-no-properties 2))
-          (when long
-            (put-text-property
-             0 1 'annot (match-string-no-properties 1) long)
-            (put-text-property
-             0 1 'annot (match-string-no-properties 2) short)
-            (put-text-property
-             0 1 'meta (match-string-no-properties 3) long)
-            (push long res))
-          (push short res))
-        (forward-line 1)
-        (goto-char (line-beginning-position))))
-    (setq company-indentpro-candidates-list (sort res 'string<))
-    company-indentpro-candidates-list))
+(defvar company-indentpro-candidates ())
+(defun company-indentpro-candidates ()
+  "Build/return candidate list."
+  (or company-indentpro-candidates
+      (let (res short long end)
+        (with-temp-buffer
+          (call-process "man" nil t nil "indent")
+          (goto-char (point-min))
+          (re-search-forward company-indentpro-start-regexp)
+          (save-excursion
+            (setq end (re-search-forward company-indentpro-end-regexp)))
+          (forward-line 1)
+          (while (not (or (eobp)
+                          (< end (point))))
+            (when (re-search-forward company-indentpro-regexp end t)
+              (setq short (match-string-no-properties 1))
+              (put-text-property
+               0 1 'meta (match-string-no-properties 3) short)
+              (setq long (match-string-no-properties 2))
+              (when long
+                (put-text-property
+                 0 1 'annot (match-string-no-properties 1) long)
+                (put-text-property
+                 0 1 'annot (match-string-no-properties 2) short)
+                (put-text-property
+                 0 1 'meta (match-string-no-properties 3) long)
+                (push long res))
+              (push short res))
+            (forward-line 1)
+            (goto-char (line-beginning-position))))
+        (setq company-indentpro-candidates (sort res 'string<)))))
 
 (defun company-indentpro-prefix ()
   (and (derived-mode-p major-mode company-indentpro-modes)
@@ -156,10 +145,6 @@ output.")
 (defun company-indentpro-annotation (candidate)
   (get-text-property 0 'annot candidate))
 
-(defun company-indentpro-candidates (arg)
-  (all-completions arg (or company-indentpro-candidates-list
-                           (company-indentpro-build-list))))
-
 (defun company-indentpro-strip-props (arg)
   (substring-no-properties arg))
 
@@ -174,7 +159,7 @@ output.")
     (meta (company-indentpro-meta arg))
     (doc-buffer (company-indentpro-doc arg))
     (sorted t)
-    (candidates (company-indentpro-candidates arg))))
+    (candidates (all-completions arg (company-indentpro-candidates)))))
 
 (provide 'company-indentpro)
 ;;; company-indentpro.el ends here

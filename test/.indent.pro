@@ -13,4 +13,3 @@
 --space-special-semicolon
 --line-length75
 --dont-break-procedure-type
-

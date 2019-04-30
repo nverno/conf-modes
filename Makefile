@@ -1,21 +1,26 @@
-wget  ?= wget
+WGET  ?= wget
 RM     = rm -rf
-emacs ?= emacs
+EMACS ?= emacs
+CASK ?= cask
+
+PKG = conf-modes.el
+LOAD_PATH ?=
+LOAD_PATH += -L .
+BATCH = $(EMACS) -Q -batch $(LOAD_PATH)
 
 .PHONY: test clean distclean nvp
 all: test
 test:
-	$(emacs) -Q -batch --eval '(progn (push "." load-path))' \
-	-L . -l ert -l test/conf-tests.el                        \
-	-f ert-run-tests-batch-and-exit
+	$(CASK) exec ert-runner
 
-README.md: el2markdown.el conf-modes.el
-	$(emacs) -batch -l $< conf-modes.el -f el2markdown-write-readme
+README.md: el2markdown.el ${PKG}
+	$(BATCH) -l $< $(PKG) -f el2markdown-write-readme
 	$(RM) $@~
 
 .INTERMEDIATE: el2markdown.el
 el2markdown.el:
-	$(wget) -q -O $@ "https://github.com/Lindydancer/el2markdown/raw/master/el2markdown.el"
+	$(WGET) \
+  -q -O $@ "https://github.com/Lindydancer/el2markdown/raw/master/el2markdown.el"
 
 clean:
 	$(RM) *~

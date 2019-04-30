@@ -1,8 +1,9 @@
-;;; company-indentpro.el --- Major mode and completion backend for .indent.pro files. -*- lexical-binding: t; -*-
+;;; company-indentpro.el --- Major mode for .indent.pro -*- lexical-binding: t; -*-
+
+;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
-;; URL: https://github.com/nverno/company-indent-pro
-;; Last modified: <2019-01-16 18:27:55>
+;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires:
 ;; Created:  5 August 2016
 ;; Keywords: languages tools matching
@@ -42,9 +43,9 @@
 ;; ```
 
 ;;; Code:
-
-(defvar company-backends)
-(autoload 'company-indentpro "company-indentpro")
+(eval-when-compile
+  (require 'cl-lib)
+  (defvar company-backends))
 
 (defgroup indentpro nil
   "Emacs major mode for .indent.pro files."
@@ -100,10 +101,10 @@
   
   ;; Enable company-indentpro backend
   (when (and (featurep 'company)
-             (featurep 'company-indentpro)
+             (require 'company-indentpro nil t)
              indentpro-use-company)
     (make-local-variable 'company-backends)
-    (push 'company-indentpro company-backends)))
+    (cl-pushnew 'company-indentpro company-backends)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.indent\\.pro\\'" . indentpro-mode))
