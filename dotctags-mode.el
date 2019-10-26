@@ -28,9 +28,8 @@
 
 ;;; Commentary:
 
-;; Major mode for .ctags configs and company completion backend.
-;; The completion is configured for universal-ctags, not ctags bundled with
-;; emacs.
+;; Major mode for .ctags configs and company completion backend. The completion
+;; is configured for universal-ctags, not exuberant-ctags bundled with emacs.
 
 ;;; Code:
 (eval-when-compile
@@ -57,7 +56,7 @@
     st))
 
 ;;;###autoload
-(define-derived-mode dotctags-mode conf-windows-mode "Conf[cTags]"
+(define-derived-mode dotctags-mode conf-windows-mode "Conf[ctags]"
   "Conf Mode for ctags config."
   :syntax-table dotctags-mode-syntax-table
   (conf-mode-initialize "#")
