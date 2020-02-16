@@ -1,12 +1,12 @@
 WGET  ?= wget
-RM     = rm -rf
+RM    =  rm -rf
 EMACS ?= emacs
-CASK ?= cask
+CASK  ?= cask
 
-PKG = conf-modes.el
-LOAD_PATH ?=
+PKG       =  conf-modes.el
+LOAD_PATH ?= 
 LOAD_PATH += -L .
-BATCH = $(EMACS) -Q -batch $(LOAD_PATH)
+BATCH     =  $(EMACS) -Q -batch $(LOAD_PATH)
 
 .PHONY: test clean distclean nvp
 all: test
