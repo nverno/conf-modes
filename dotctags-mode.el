@@ -4,7 +4,6 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created: 29 September 2016
-;; Last modified: <2019-01-16 18:39:23>
 ;; URL: https://github.com/nverno/conf-modes
 ;; Package-Requires: (("company"))
 ;; Keywords: languages tools matching
