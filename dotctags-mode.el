@@ -45,7 +45,7 @@
   (goto-char start)
   (funcall
    (syntax-propertize-rules
-    ("^\\s-*#.*" (0 "<")))
+    ("^\\s-*\\(#\\).*" (1 "<")))
    (point) end))
 
 (defvar dotctags-mode-syntax-table
