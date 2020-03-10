@@ -31,11 +31,9 @@
 ;; is configured for universal-ctags, not exuberant-ctags bundled with emacs.
 
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib)
-  (require 'conf-macros))
-(require 'company)
+(eval-when-compile (require 'cl-lib))
 (require 'conf-mode)
+(require 'conf-completion)
 
 ;; -------------------------------------------------------------------
 ;;; Major-mode
@@ -61,20 +59,15 @@
   (conf-mode-initialize "#")
   (setq-local comment-end "")
   (setq-local company-backends '(company-dotctags))
-  (setq-local syntax-propertize-function #'dotctags-propertize))
+  (setq-local syntax-propertize-function #'dotctags-propertize)
+  ;; universal-ctags not emacs ctags
+  (setq-local conf-completion-program "ctags")
+  (setq-local conf-completion-args '("--help"))
+  (setq-local conf-completion-regexp '("^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2))
+  (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.ctags\\'" . dotctags-mode))
 
-;; ------------------------------------------------------------
-;;; Completion
-
-;; this is configured for universal-ctags, not emacs ctags
-(company-conf dotctags
-              :program "ctags"
-              :keyword-re "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)"
-              :keyword-re-pos ((candidate . 1) (annotation . 2)))
-
 (provide 'dotctags-mode)
-
 ;;; dotctags-mode.el ends here

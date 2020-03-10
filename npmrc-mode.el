@@ -48,21 +48,10 @@
   (setq-local conf-completion-program "npm")
   (setq-local conf-completion-args '("config" "ls" "-l"))
   (setq-local conf-completion-regexp '("^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2))
-  (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t)
-  ;; (setq-local company-backends (cons 'company-npmrc company-backends))
-  )
+  (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.npmrc" . npmrc-mode))
-
-;; -------------------------------------------------------------------
-;;; Completion
-
-;; create completion candidates from 'npm config --help'
-;; (company-conf npmrc
-;;   :program "npm"
-;;   :args ("config" "ls" "-l") ; show all config options
-;;   :keyword-re "\\s-*\\([^\[<]+\\)\\s-*\\([^\n]*\\)")
 
 (provide 'npmrc-mode)
 ;;; npmrc-mode.el ends here

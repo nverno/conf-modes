@@ -27,8 +27,7 @@
 ;;; Commentary:
 ;; DSL for housemate system
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib))
+(eval-when-compile (require 'cl-lib))
 (require 'company)
 
 (eval-and-compile
