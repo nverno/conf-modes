@@ -28,11 +28,8 @@
 ;;; Commentary:
 ;; Major mode and completion for .npmrc
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib)
-  (require 'conf-macros))
-(require 'company)
 (require 'conf-mode)
+(require 'conf-completion)
 
 ;; -------------------------------------------------------------------
 ;;; Major mode
@@ -48,7 +45,12 @@
   "Conf mode for npmrc."
   :syntax-table npmrc-mode-syntax-table
   (conf-mode-initialize "#")
-  (setq-local company-backends (cons 'company-npmrc company-backends)))
+  (setq-local conf-completion-program "npm")
+  (setq-local conf-completion-args '("config" "ls" "-l"))
+  (setq-local conf-completion-regexp '("^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2))
+  (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t)
+  ;; (setq-local company-backends (cons 'company-npmrc company-backends))
+  )
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.npmrc" . npmrc-mode))
@@ -57,8 +59,10 @@
 ;;; Completion
 
 ;; create completion candidates from 'npm config --help'
-(company-conf npmrc :program "npm" :args ("config" "--help")
-              :keyword-re "\\s-*\\([^\[<]+\\)\\s-*\\([^\n]*\\)")
+;; (company-conf npmrc
+;;   :program "npm"
+;;   :args ("config" "ls" "-l") ; show all config options
+;;   :keyword-re "\\s-*\\([^\[<]+\\)\\s-*\\([^\n]*\\)")
 
 (provide 'npmrc-mode)
 ;;; npmrc-mode.el ends here

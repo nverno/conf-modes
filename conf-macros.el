@@ -44,6 +44,7 @@
   "Create company backend for mode NAME calling PROGRAM --help and parsing with
 KEYWORD-RE to get options.  KEYWORD-RE-POS specifies capture groups for 
 completions candidate and its annotation."
+  (declare (indent defun) (debug t))
   (let* ((comp (concat "company-" (symbol-name name)))
          (keywords (intern (concat comp "-keywords")))
          (prefix (intern (concat comp  "-prefix")))
@@ -84,9 +85,5 @@ completions candidate and its annotation."
            (candidates (,candidates arg))
            (duplicates nil))))))
 
-
-;; (company-conf dotctags :program "ctags")
-
 (provide 'conf-macros)
-
 ;;; conf-macros.el ends here
