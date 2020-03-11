@@ -38,10 +38,13 @@
 ;;; Variables to setup in mode hooks
 
 (defvar conf-completion-program nil
-  "Program to call to get completion candidates.")
+  "Program to call to get completion candidates using `start-process'.")
 
 (defvar conf-completion-args '("--help")
   "Arguments passed to `conf-completion-program' to generate the candidates.")
+
+(defvar conf-completion-shell-command nil
+  "Command to call using `start-process-shell-command' instead of `start-process'.")
 
 (defvar conf-completion-regexp
   '("^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)"
@@ -75,7 +78,8 @@ If no group numbers are given, the whole match is assumed to be the candidate.")
     (let ((cand-pos (or cand 0)) ; match position of candidate
           res)
       (while (re-search-forward regexp nil t)
-        (push (propertize (match-string cand-pos) 'annotation (match-string annot))
+        (push (propertize (match-string cand-pos)
+                          'annotation (and annot (match-string annot)))
               res))
       res)))
 
@@ -111,11 +115,15 @@ Parses candidates, then re-enables the completion-at-point function."
   "Call `conf-completion-program' and parse results to get completion candidates."
   (conf-completion-msg
    "Running %s %s" conf-completion-program
-   (mapconcat 'identity conf-completion-args " "))
+   (or conf-completion-shell-command (mapconcat 'identity conf-completion-args " ")))
   (let* ((pbuf (generate-new-buffer-name
                 (concat "*" conf-completion-program "*")))
-         (proc (apply #'start-process conf-completion-program
-                      pbuf conf-completion-program conf-completion-args)))
+         (proc
+          (if conf-completion-shell-command
+              (start-process-shell-command
+               conf-completion-program pbuf conf-completion-shell-command)
+            (apply #'start-process conf-completion-program
+                   pbuf conf-completion-program conf-completion-args))))
     (when conf-completion-process-filter
       (set-process-filter proc conf-completion-process-filter))
     (set-process-sentinel

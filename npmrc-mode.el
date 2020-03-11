@@ -26,10 +26,37 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-;; Major mode and completion for .npmrc
+;;
+;; Major mode and completion for .npmrc / .yarnrc
+;;
 ;;; Code:
+(eval-when-compile (require 'subr-x))
 (require 'conf-mode)
 (require 'conf-completion)
+
+(defvar npmrc-package-managers
+  `((".npmrc"
+     .
+     ((program . "npm")
+      (args . ("config" "ls" "-l"))
+      (regexp . ("^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2))))
+    (".yarnrc"
+     .
+     ((program . "yarn")
+      (shell-command
+       . 
+       ,(concat
+         "yarn config --no-default-rc --json list | head -n2 | tail -n1 |"
+         "jq -M '.data| keys | join(\" \")'"))
+      (regexp . ("[^ ]+"))))))
+
+;; initialize completion variables based on package manager
+(defun npmrc-mode-initialize-completion ()
+  (let ((fname (file-name-nondirectory (or (buffer-file-name) (buffer-name)))))
+    (when-let ((vals (cdr (assoc fname npmrc-package-managers))))
+      (pcase-dolist (`(,k . ,v) vals)
+        (setq k (intern (concat "conf-completion-" (symbol-name k))))
+        (set (make-local-variable k) v)))))
 
 ;; -------------------------------------------------------------------
 ;;; Major mode
@@ -45,13 +72,13 @@
   "Conf mode for npmrc."
   :syntax-table npmrc-mode-syntax-table
   (conf-mode-initialize "#")
-  (setq-local conf-completion-program "npm")
-  (setq-local conf-completion-args '("config" "ls" "-l"))
-  (setq-local conf-completion-regexp '("^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2))
+  (npmrc-mode-initialize-completion)
   (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.npmrc" . npmrc-mode))
+(add-to-list
+ 'auto-mode-alist
+ (cons (concat "\\." (regexp-opt '("npmrc" "yarnrc")) "\\'") 'npmrc-mode))
 
 (provide 'npmrc-mode)
 ;;; npmrc-mode.el ends here
