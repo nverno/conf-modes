@@ -54,17 +54,13 @@
 
 ;;;###autoload
 (define-derived-mode dotctags-mode conf-windows-mode "Conf[ctags]"
-  "Conf Mode for ctags config."
+  "Conf Mode for (universal)-ctags config."
   :syntax-table dotctags-mode-syntax-table
   (conf-mode-initialize "#")
   (setq-local comment-end "")
   (setq-local company-backends '(company-dotctags))
   (setq-local syntax-propertize-function #'dotctags-propertize)
-  ;; universal-ctags not emacs ctags
-  (setq-local conf-completion-program "ctags")
-  (setq-local conf-completion-args '("--help"))
-  (setq-local conf-completion-regexp '("^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2))
-  (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t))
+  (conf-completion-initialize "ctags"))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.ctags\\'" . dotctags-mode))

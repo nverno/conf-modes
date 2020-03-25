@@ -60,9 +60,46 @@ If no group numbers are given, the whole match is assumed to be the candidate.")
 
 (defvar conf-completion-process-filter nil "Process filter to use if non-nil")
 
+(defvar conf-completion-alist
+  `((".npmrc" .
+     ((program . "npm")
+      (args . ("config" "ls" "-l"))
+      (regexp . ("^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2))))
+    (".yarnrc" .
+     ((program . "yarn")
+      (shell-command
+       . ,(concat
+           "yarn config --no-default-rc --json list | head -n2 | tail -n1 |"
+           "jq -M '.data| keys | join(\" \")'"))
+      (regexp . ("[^ ]+"))))
+    (".perlcriticrc" .
+     ((program . "perlcritic")
+      (args . ("--list"))
+      (regexp . ("^\\([[:digit:]]+\\)\\s-*\\([[:alpha:]:]+\\)" 2 1))))
+    ("ctags" .
+     ((program . "ctags")
+      (args . ("--help"))
+      (regexp . ("^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2)))))
+  "Alist mapping files to associated programs and arguments to retrieve
+completion candidates.")
+
 ;; internal
 (defvar conf-completion-cache (make-hash-table :test #'equal)
   "Cache completion candidates for programs.")
+
+;;;###autoload
+(defun conf-completion-initialize (&optional filename)
+  "Initialize completion variables from values in `conf-completion-alist'.
+If a match is found, `conf-completion-at-point' is initialized in the buffer.
+If FILENAME is non-nil, use it to match entry in `conf-completion-alist'."
+  (interactive)
+  (let ((fname (or filename
+                   (file-name-nondirectory (or (buffer-file-name) (buffer-name))))))
+    (when-let ((vals (cdr (assoc fname conf-completion-alist))))
+      (pcase-dolist (`(,k . ,v) vals)
+        (setq k (intern (concat "conf-completion-" (symbol-name k))))
+        (set (make-local-variable k) v))
+      (add-hook 'completion-at-point-functions #'conf-completion-at-point nil t))))
 
 ;; -------------------------------------------------------------------
 ;;; Process

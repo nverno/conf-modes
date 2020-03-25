@@ -1,12 +1,11 @@
-;;; npmrc-mode.el --- Major mode for .npmrc -*- lexical-binding: t; -*-
+;;; conf-perlrc.el --- Perl config files -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Last modified: <2019-01-16 17:40:51>
-;; Package-Requires: '(company)
-;; Created: 17 August 2018
+;; Package-Requires: 
+;; Created: 25 March 2020
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -27,30 +26,25 @@
 
 ;;; Commentary:
 ;;
-;; Major mode and completion for .npmrc / .yarnrc
+;; Perl config files
+;; - .perlcritic
+;; - .perltidyrc
 ;;
 ;;; Code:
-(eval-when-compile (require 'subr-x))
 (require 'conf-mode)
 (require 'conf-completion)
 
-;; comment start with either [;#]
-(defvar npmrc-mode-syntax-table
-  (let ((tab (make-syntax-table conf-unix-mode-syntax-table)))
-    (modify-syntax-entry ?\; "<" tab)
-    tab))
-
 ;;;###autoload
-(define-derived-mode npmrc-mode conf-unix-mode "Conf[npmrc]"
-  "Conf mode for npmrc."
-  :syntax-table npmrc-mode-syntax-table
-  (conf-mode-initialize "#")
+(define-derived-mode perlcritic-mode conf-toml-mode "Conf[plcrit]"
+  (modify-syntax-entry ?- "'")
   (conf-completion-initialize))
 
 ;;;###autoload
-(add-to-list
- 'auto-mode-alist
- (cons (concat "\\." (regexp-opt '("npmrc" "yarnrc")) "\\'") 'npmrc-mode))
+(add-to-list 'auto-mode-alist '("\\.perlcriticrc\\'" . perlcritic-mode))
 
-(provide 'npmrc-mode)
-;;; npmrc-mode.el ends here
+(provide 'conf-perlrc)
+;; Local Variables:
+;; coding: utf-8
+;; indent-tabs-mode: nil
+;; End:
+;;; conf-perlrc.el ends here
