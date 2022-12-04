@@ -78,6 +78,8 @@
 (define-derived-mode ccls-config-mode conf-mode "CCLS"
   "Major mode for .ccls config.\n."
   (setq-local font-lock-defaults '(ccls-config-mode-font-lock-keywords))
+  (when (featurep 'yasnippet)
+    (yas-minor-mode))
   (add-hook 'completion-at-point-functions #'ccls-config-mode-completion-at-point nil t))
 
 ;;;###autoload
