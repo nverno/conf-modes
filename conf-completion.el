@@ -77,7 +77,7 @@ If no group numbers are given, the whole match is assumed to be the candidate.")
       (args . ("--list"))
       (regexp . ("^\\([[:digit:]]+\\)\\s-*\\([[:alpha:]:]+\\)" 2 1))))
     ("ctags" .
-     ((program . "ctags")
+     ((program . "ctags-universal")
       (args . ("--help"))
       (regexp . ("^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2)))))
   "Alist mapping files to associated programs and arguments to retrieve
