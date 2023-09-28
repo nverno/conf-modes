@@ -35,7 +35,7 @@
 (require 'smie)
 
 (defvar netrc-mode-indent-offset 8
-  "Indentation offset for `netrc-mode', defaults to align with 'machine '.")
+  "Indentation offset for `netrc-mode', defaults to align with \"machine\".")
 
 (defconst netrc-mode-smie-grammar
   (smie-prec2->grammar
