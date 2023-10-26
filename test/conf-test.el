@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t; -*-
 (require 'ert)
 (require 'xkb-mode)
 (require 'indentpro-mode)
