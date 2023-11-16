@@ -73,7 +73,8 @@
   `((,(concat "^" (regexp-opt ccls-config-mode-driver) "\\_>")
      . font-lock-keyword-face)
     (,(concat "^%" (regexp-opt ccls-config-mode-directives) "\\_>")
-     . font-lock-builtin-face)))
+     . font-lock-builtin-face)
+    (,(rx line-start (or "-I" "-isystem")) . font-lock-keyword-face)))
 
 ;;;###autoload
 (define-derived-mode ccls-config-mode conf-mode "CCLS"
