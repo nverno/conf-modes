@@ -34,6 +34,9 @@
 (require 'conf-mode)
 (require 'conf-completion)
 
+(defvar clang-tidy-mode-font-lock-keywords
+  '(("^\\s-*\\(\\w+\\):" 1 'font-lock-property-name-face)))
+
 (defun clang-tidy-mode--update-keywords (kws)
   (unless (length> clang-tidy-mode-font-lock-keywords 1)
     (let ((kws-re
@@ -42,10 +45,7 @@
       (push `(,kws-re . font-lock-builtin-face) clang-tidy-mode-font-lock-keywords))
     (font-lock-refresh-defaults)
     (font-lock-flush)
-    (font-lock-fontify-buffer)))
-
-(defvar clang-tidy-mode-font-lock-keywords
-  '(("^\\s-*\\(\\w+\\):" 1 'font-lock-property-name-face)))
+    (font-lock-ensure)))
 
 ;;;###autoload
 (define-derived-mode clang-tidy-mode conf-mode "ClangTidy"
