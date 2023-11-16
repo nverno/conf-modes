@@ -1,11 +1,13 @@
-;;; conf-perlrc.el --- Perl config files -*- lexical-binding: t; -*-
+;;; perlcritic-mode.el --- Perl config files -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires: 
+;; Package-Requires: ((emacs "25.1"))
 ;; Created: 25 March 2020
+;; Version: 0.1.0
+;; Keywords: languages
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -31,20 +33,23 @@
 ;; - .perltidyrc
 ;;
 ;;; Code:
+
 (require 'conf-mode)
 (require 'conf-completion)
 
 ;;;###autoload
-(define-derived-mode perlcritic-mode conf-toml-mode "Conf[plcrit]"
+(define-derived-mode perlcritic-mode conf-toml-mode "Conf[perlrc]"
+  "Major mode for perlcritic config."
+  :group 'conf
   (modify-syntax-entry ?- "'")
   (conf-completion-initialize))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.perlcriticrc\\'" . perlcritic-mode))
 
-(provide 'conf-perlrc)
+(provide 'perlcritic-mode)
 ;; Local Variables:
 ;; coding: utf-8
 ;; indent-tabs-mode: nil
 ;; End:
-;;; conf-perlrc.el ends here
+;;; perlcritic-mode.el ends here

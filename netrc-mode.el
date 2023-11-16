@@ -4,9 +4,10 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Last modified: <2019-01-16 17:39:38>
 ;; Package-Requires: 
+;; Version: 0.1.0
 ;; Created: 13 December 2018
+;; Keywords:
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,16 +27,18 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
+;;
 ;; Major mode for .netrc files: syntax, font-locking, and indentation
-
+;;
 ;;; Code:
 
 (require 'authinfo-mode)
 (require 'smie)
 
-(defvar netrc-mode-indent-offset 8
-  "Indentation offset for `netrc-mode', defaults to align with \"machine\".")
+(defcustom netrc-mode-indent-offset 8
+  "Indentation offset for `netrc-mode', defaults to align with \"machine\"."
+  :group 'conf
+  :type 'integer)
 
 (defconst netrc-mode-smie-grammar
   (smie-prec2->grammar
@@ -50,7 +53,9 @@
      (- netrc-mode-indent-offset (current-column)))))
 
 ;;;###autoload
-(define-derived-mode netrc-mode authinfo-mode
+(define-derived-mode netrc-mode authinfo-mode "Netrc"
+  "Major mode for netrc configs."
+  :group 'conf
   (modify-syntax-entry ?\. "_")
   (smie-setup netrc-mode-smie-grammar #'netrc-mode-smie-rules))
 

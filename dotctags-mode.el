@@ -5,8 +5,9 @@
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created: 29 September 2016
 ;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires: (("company"))
+;; Package-Requires: ((emacs "24.3") (company "0.10"))
 ;; Keywords: languages tools matching
+;; Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,11 +27,12 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
+;;
 ;; Major mode for .ctags configs and company completion backend. The completion
-;; is configured for universal-ctags, not exuberant-ctags bundled with emacs.
-
+;; is configured for universal-ctags, not exuberant-ctags bundled with Emacs.
+;;
 ;;; Code:
+
 (eval-when-compile (require 'cl-lib))
 (require 'conf-mode)
 (require 'conf-completion)
@@ -56,10 +58,10 @@
 ;;;###autoload
 (define-derived-mode dotctags-mode conf-windows-mode "Conf[ctags]"
   "Conf Mode for (universal)-ctags config."
+  :group 'conf
   :syntax-table dotctags-mode-syntax-table
   (conf-mode-initialize "#")
   (setq-local comment-end "")
-  (setq-local company-backends '(company-dotctags))
   (setq-local syntax-propertize-function #'dotctags-propertize)
   (conf-completion-initialize "ctags"))
 

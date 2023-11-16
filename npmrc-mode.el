@@ -4,9 +4,10 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Last modified: <2019-01-16 17:40:51>
 ;; Package-Requires: '(company)
 ;; Created: 17 August 2018
+;; Version: 0.1.0
+;; Keywords:
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -30,6 +31,7 @@
 ;; Major mode and completion for .npmrc / .yarnrc
 ;;
 ;;; Code:
+
 (eval-when-compile (require 'subr-x))
 (require 'conf-mode)
 (require 'conf-completion)
@@ -42,7 +44,8 @@
 
 ;;;###autoload
 (define-derived-mode npmrc-mode conf-unix-mode "Conf[npmrc]"
-  "Conf mode for npmrc."
+  "Major mode for npmrc configs."
+  :group 'conf
   :syntax-table npmrc-mode-syntax-table
   (conf-mode-initialize "#")
   (conf-completion-initialize))

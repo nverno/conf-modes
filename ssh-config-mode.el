@@ -1,12 +1,13 @@
-;;; ssh-mode.el --- Major mode for SSH configs -*- lexical-binding: t; -*-
+;;; ssh-config-mode.el --- Major mode for SSH configs -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Last modified: <2019-01-31 00:21:56>
 ;; Package-Requires: 
 ;; Created: 14 December 2018
+;; Version: 0.1.0
+;; Keywords:
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -28,9 +29,13 @@
 ;;; Commentary:
 ;; Major mode for SSH config files: font-lock, syntax, indentation, help
 ;;; Code:
+
 (require 'smie)
 
-(defvar ssh-config-indent-offset 5)
+(defcustom ssh-config-indent-offset 5
+  "Number of spaces for indentation."
+  :group 'conf
+  :type 'integer)
 
 (defvar ssh-config-keywords
   (eval-when-compile
@@ -100,21 +105,29 @@ Search for KEY or symbol at point if possible."
 (defvar ssh-config-mode-map
   (let ((km (make-sparse-keymap)))
     (define-key km (kbd "M-?") #'ssh-config-help)
-    km))
+    km)
+  "Keymap for `ssh-config-mode'.")
+
+(defvar ssh-config-mode-syntax-table
+  (let ((tab (make-syntax-table)))
+    (modify-syntax-entry ?# "<" tab)
+    (modify-syntax-entry ?\n ">" tab)
+    (modify-syntax-entry ?\. "_" tab)
+    tab)
+  "Syntax table for `ssh-config-mode'.")
 
 ;;;###autoload
 (define-derived-mode ssh-config-mode prog-mode "SSH"
-  (modify-syntax-entry ?# "<")
-  (modify-syntax-entry ?\n ">")
-  (modify-syntax-entry ?\. "_")
+  "Major mode for ssh configs."
+  :group 'conf
   (setq-local comment-start "# ")
   (setq-local comment-end "")
   (setq-local imenu-generic-expression '((nil "\\s-*[Hh]ost\\s-+\\(.*\\)\\s-*$" 1)))
   (smie-setup ssh-config-grammar #'ssh-config-smie-rules)
-  (setq font-lock-defaults '(ssh-config-keywords nil 'case-fold)))
+  (setq-local font-lock-defaults '(ssh-config-keywords nil 'case-fold)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.?sshd?[_/]config\\'" . ssh-config-mode))
 
-(provide 'ssh-mode)
-;;; ssh-mode.el ends here
+(provide 'ssh-config-mode)
+;;; ssh-config-mode.el ends here

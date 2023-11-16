@@ -5,8 +5,9 @@
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created:  6 August 2016
 ;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires:
+;; Package-Requires: ((emacs "25.1") (company "0.10"))
 ;; Keywords: languages tools matching
+;; Version: 0.1.0
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,26 +27,26 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
+;;
 ;; Completion support (`company-mode') backend for .indent.pro files.
-
+;;
 ;; Provides:
-
+;;
 ;; + meta information for command options
 ;; + annotation showing long options for short options and vice versa
 ;; + support for `company-doc' (ie ~C-h~ in company completion).
-
+;;
 ;;; Installation:
-
+;;
 ;; Requires 'indent' application to be installed.
-
+;;
 ;; Install `company-mode' and add this file to `load-path'.
 ;; Then either compile/create autoloads and load autoloads files,
 ;; or require the file in your init file:
-
+;;
 ;; ```lisp
 ;; (require 'company-indentpro-mode) ; or autoload
-
+;;
 ;; ;; Either set `indentpro-use-company' or add a custom hook,
 ;; ;; For example:
 ;; 
@@ -55,13 +56,15 @@
 ;;                    '((company-indentpro company-dabbrev-code)
 ;;                       company-dabbrev))))
 ;; ```
-
+;;
 ;;; Code:
+
 (require 'company)
 
 (defgroup company-indentpro nil
   "Company completion backend for '.indent.pro' files."
   :group 'company
+  :group 'conf
   :group 'indentpro)
 
 (defcustom company-indentpro-start-regexp
@@ -150,7 +153,8 @@
 
 ;;;###autoload
 (defun company-indentpro (command &optional arg &rest _args)
-  "Indent pro backend for `company-mode'."
+  "Indent pro backend for `company-mode'.
+See `company-mode' for explanation of COMMAND and ARG."
   (interactive (list 'interactive))
   (cl-case command
     (interactive (company-begin-backend 'company-indentpro))

@@ -1,12 +1,13 @@
-;;; xmodmap-mode.el --- Xmodmap major mode -*- lexical-binding: t; -*-
+;;; xmodmap-mode.el --- Major mode for xmodmap config -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
-;; Last modified: <2019-01-31 00:20:02>
 ;; Package-Requires: 
 ;; Created:  7 November 2016
+;; Version: 0.1.0
+;; Keywords:
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,10 +27,10 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
-;; Major mode for .Xmodmap config
-;; See emacs wiki https://www.emacswiki.org/emacs/XModMapMode
-
+;;
+;; Major mode for .Xmodmap configs.
+;; See Emacs wiki https://www.emacswiki.org/emacs/XModMapMode
+;;
 ;;; Code:
 
 ;;;###autoload

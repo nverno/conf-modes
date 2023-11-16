@@ -1,12 +1,13 @@
-;;; xkb-mode.el --- major mode for XKB configs -*- lexical-binding: t; -*-
+;;; xkb-mode.el --- Major mode for XKB configs -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; Created:  7 November 2016
-;; Last modified: <2019-01-26 03:30:56>
 ;; URL: https://github.com/nverno/conf-mode
-;; Package-Requires: 
+;; Package-Requires:
+;; Version: 0.1.0
+;; Keywords:
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -26,17 +27,24 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
-;; Major mode for XKB files: syntax, font-lock, and indentation
-;; Vim syntax: https://github.com/vim/vim/tree/master/runtime/syntax
-
+;;
+;; Major mode for XKB files: syntax, font-lock, and indentation.
+;;
+;; References:
+;; - Vim syntax: https://github.com/vim/vim/tree/master/runtime/syntax
+;;
 ;;; Code:
+
 (require 'smie)
+
+(defcustom xkb-indent-offset 4
+  "Default indentaion offset for `xkb-mode'."
+  :group 'conf
+  :type 'integer)
+
 (eval-when-compile
   (defmacro re-opt (opts)
     `(concat "\\_<" (regexp-opt ,opts t) "\\_>")))
-
-(defvar xkb-indent-offset 4 "Default indentaion offset for `xkb-mode'.")
 
 ;; probably missing stuff
 (defvar xkb-font-lock-keywords
@@ -89,7 +97,8 @@
     (modify-syntax-entry ?+ "." st)
     (modify-syntax-entry ?= "." st)
     (modify-syntax-entry ?_ "w" st)
-    st))
+    st)
+  "Syntax table for `xkb-mode'.")
 
 (defconst xkb-smie-grammar
   (smie-prec2->grammar
@@ -108,10 +117,12 @@
 
 ;;;###autoload
 (define-derived-mode xkb-mode  prog-mode "xkb"
+  "Major mode for xkb buffers."
+  :group 'conf
   (setq-local comment-start "// ")
   (setq-local comment-end "")
   (setq-local font-lock-defaults '(xkb-font-lock-keywords))
-  (setq imenu-generic-expression xkb-imenu-expression)
+  (setq-local imenu-generic-expression xkb-imenu-expression)
   (smie-setup xkb-smie-grammar #'xkb-smie-rules))
 
 ;;;###autoload

@@ -1,9 +1,9 @@
 ;;; conf-modes.el --- Major modes for configuration files -*- lexical-binding: t; -*-
 
 ;; Author: noah peart <noah.v.peart@gmail.com>
-;; Last modified: <2019-01-29 00:14:37>
 ;; URL: http://github.com/nverno/conf-modes
-;; Package-Requires: 
+;; Package-Requires: ((emacs "25.3"))
+;; Version: 0.1.0
 ;; Keywords: languages
 
 ;; This file is not part of GNU Emacs.
@@ -24,7 +24,7 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
+;;
 ;; Configuration modes:
 ;; 
 ;; - `xkb-mode'       => xkb configuration files
@@ -45,7 +45,7 @@
 ;;
 ;; `conf-macros' generates company backends from calling some sort of
 ;;     "--help"-like output from a command-line program
-
+;;
 ;;; Code:
 
 (provide 'conf-modes)

@@ -43,18 +43,14 @@
 ;; ```
 
 ;;; Code:
-(eval-when-compile
-  (require 'cl-lib)
-  (defvar company-backends))
 
-(defgroup indentpro nil
-  "Emacs major mode for .indent.pro files."
-  :group 'languages)
+(eval-when-compile (require 'cl-lib))
+(defvar company-backends)
 
 (defcustom indentpro-use-company (featurep 'company)
   "Use company completion backend.  When true, pushes
  `company-indentpro' to local `company-backends'."
-  :group 'indentpro
+  :group 'conf
   :type 'boolean)
 
 (defvar indentpro-common-styles
@@ -94,6 +90,7 @@
 ;;;###autoload
 (define-derived-mode indentpro-mode conf-mode "Indent Pro"
   "Major mode for .indent.pro files.\n"
+  :group 'conf
   (setq-local comment-start "/* ")
   (setq-local comment-start-skip "\\(//+\\|/\\*+\\)\\s *")
   (setq-local comment-end " */")

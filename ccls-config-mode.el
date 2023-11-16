@@ -1,11 +1,13 @@
-;;; ccls-config-mode.el --- .ccls config mode -*- lexical-binding: t; -*-
+;;; ccls-config-mode.el --- Major mode for .ccls config -*- lexical-binding: t; -*-
 
 ;; This is free and unencumbered software released into the public domain.
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-modes
-;; Package-Requires:
+;; Package-Requires: ((emacs "29.1"))
 ;; Created:  4 December 2022
+;; Version: 0.1.0
+;; Keywords: languages
 
 ;; This file is not part of GNU Emacs.
 ;;
@@ -25,14 +27,11 @@
 ;; Floor, Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
-
-;; [![Build Status](https://travis-ci.org/nverno/conf-modes.svg?branch=master)](https://travis-ci.org/nverno/conf-modes)
-;;
-;;; Description:
 ;;
 ;; Reference: https://github.com/MaskRay/ccls/wiki/Project-Setup#ccls-file
 ;;
 ;;; Code:
+
 (eval-when-compile (require 'cl-lib))
 
 (defvar ccls-config-mode-driver '("clang" "clang++"))
@@ -43,7 +42,7 @@
     "cu"
     "h" "hpp"))
 
-(defsubst line-empty-p ()
+(defsubst ccls-config--line-empty-p ()
   "Check if line is empty."
   (and (not (bobp))
        (save-excursion
@@ -54,7 +53,7 @@
   "Completion at point function."
   (let* ((pos (point))
          (end (save-excursion (skip-chars-forward "[:alnum:]_" (pos-eol)) (point)))
-         (beg (unless (or (line-empty-p)
+         (beg (unless (or (ccls-config--line-empty-p)
                           (eq (char-syntax (char-before pos)) ?\s))
                 (save-excursion
                   (skip-chars-backward "[:alnum:]_" (pos-bol))
@@ -71,12 +70,15 @@
                        :annotation-function (lambda (_s) "<driver>"))))))))
 
 (defvar ccls-config-mode-font-lock-keywords
-  `((,(concat "^" (regexp-opt ccls-config-mode-driver) "\\_>") . font-lock-keyword-face)
-    (,(concat "^%" (regexp-opt ccls-config-mode-directives) "\\_>") . font-lock-builtin-face)))
+  `((,(concat "^" (regexp-opt ccls-config-mode-driver) "\\_>")
+     . font-lock-keyword-face)
+    (,(concat "^%" (regexp-opt ccls-config-mode-directives) "\\_>")
+     . font-lock-builtin-face)))
 
 ;;;###autoload
 (define-derived-mode ccls-config-mode conf-mode "CCLS"
-  "Major mode for .ccls config.\n."
+  "Major mode for .ccls config."
+  :group 'conf
   (setq-local font-lock-defaults '(ccls-config-mode-font-lock-keywords))
   (when (featurep 'yasnippet)
     (yas-minor-mode))
