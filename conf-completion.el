@@ -80,7 +80,7 @@ jq -Mr '.data|to_entries|map(\"\\(.key) \\(.value|tostring)\")[]'")
      ((program "perlcritic" "--list")
       (regexp "^\\([[:digit:]]+\\)\\s-*\\([[:alpha:]:]+\\)" 2 1)))
     ("ctags" 
-     ((program "ctags-universal" "--help")
+     ((program "ctags" "--help")
       (regexp "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2)))
     ("clang-tidy"
      ((program "clang-tidy")
