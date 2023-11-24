@@ -128,7 +128,7 @@
         (setq company-indentpro-candidates (sort res 'string<)))))
 
 (defun company-indentpro-prefix ()
-  (and (derived-mode-p major-mode company-indentpro-modes)
+  (and (derived-mode-p company-indentpro-modes)
        (not (company-in-string-or-comment))
        (company-grab-symbol)))
 
