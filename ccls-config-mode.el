@@ -81,8 +81,6 @@
   "Major mode for .ccls config."
   :group 'conf
   (setq-local font-lock-defaults '(ccls-config-mode-font-lock-keywords))
-  (when (featurep 'yasnippet)
-    (yas-minor-mode))
   (add-hook 'completion-at-point-functions #'ccls-config-mode-completion-at-point nil t))
 
 ;;;###autoload
