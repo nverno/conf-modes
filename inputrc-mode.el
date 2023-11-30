@@ -43,6 +43,27 @@
   :type 'integer
   :safe 'integerp)
 
+(defvar inputrc-mode--dir
+  (file-name-directory
+   (cond (load-in-progress load-file-name)
+         ((and (boundp 'byte-compile-current-file)
+               byte-compile-current-file)
+          byte-compile-current-file)
+         (t (buffer-file-name)))))
+
+(defun inputrc-mode--get-variables ()
+  "Get readline \"set\" variables and descriptions."
+  (let ((exe (expand-file-name "bin/readline.awk" inputrc-mode--dir)))
+    (with-temp-buffer
+      (unless (zerop (call-process-shell-command 
+                      (format (concat "env TERM=dumb MAN_KEEP_FORMATTING=1 "
+                                      "man 3 readline 2>/dev/null | awk -f %s")
+                              exe)
+                      nil (current-buffer) nil))
+        (user-error "Failed to read readline variables"))
+      (goto-char (point-min))
+      (read (current-buffer)))))
+
 (defconst inputrc-mode-grammar
   (smie-prec2->grammar
    (smie-bnf->prec2
@@ -72,7 +93,7 @@
     ((lambda (lim)
        (and (re-search-forward "\\(\\\\[A-Za-z]\\(?:-[^\\]?\\)?\\)" lim t)
             (null (nth 4 (syntax-ppss (match-beginning 0))))))
-     (1 'font-lock-type-face t))
+     (1 'font-lock-type-face prepend))
     ("\".*\"[ \t]*:[ \t]*\\([[:graph:]]+\\)" (1 font-lock-variable-name-face))
     ("\\([^ \t\"]+\\)[ \t]*:[ \t]*\\([[:graph:]]+\\)"
      (1 font-lock-type-face)
