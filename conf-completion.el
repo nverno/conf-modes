@@ -66,11 +66,19 @@ If no group numbers are given, the whole match is assumed to be the candidate.")
 
 (defvar conf-completion-process-filter nil "Process filter to use if non-nil.")
 
+(defvar conf-completion-capf-function nil
+  "When non-nil, this function is applied to START END CANDIDATES and should return
+list for `completion-at-point'.")
+
+(defvar conf-completion-botap nil
+  "When non-nil, this function should return a cons of \\='(start . end) for the
+symbol to complete at point.")
+
 (defvar conf-completion-alist
   `((".npmrc"
      ((program "npm" "config" "ls" "-l")
       (regexp "^\\([^; \t]+\\)\\s-*=\\s-*\\(.*\\)" 1 2)))
-    (".yarnrc" 
+    (".yarnrc"
      ((program "yarn")
       (shell-command
        "yarn config --no-default-rc --json list | head -n2 | tail -n1 |
@@ -79,13 +87,18 @@ jq -Mr '.data|to_entries|map(\"\\(.key) \\(.value|tostring)\")[]'")
     (".perlcriticrc"
      ((program "perlcritic" "--list")
       (regexp "^\\([[:digit:]]+\\)\\s-*\\([[:alpha:]:]+\\)" 2 1)))
-    ("ctags" 
+    ("ctags"
      ((program "ctags" "--help")
       (regexp "^\\s-*\\(--?[^=]+\\)=\\([^\n]*\\)" 1 2)))
     ("clang-tidy"
      ((program "clang-tidy")
       (shell-command "clang-tidy --list-checks --checks=* | tail -n +2")
-      (regexp "\\s-*\\(\\S-+\\)" 1))))
+      (regexp "\\s-*\\(\\S-+\\)" 1)))
+    (".gitconfig"
+     ((program "git")
+      (shell-command "git help --config | head -n -1")
+      (regexp "^\\(\\S-+\\)" 1)
+      (capf-function . conf-completion-gitconfig-capf))))
   "Alist mapping files to associated programs and arguments.
 The output from calling these commands will be parsed to produce completion
 candidates.")
@@ -189,13 +202,34 @@ CALLBACK, if given, will be called with completion candidates."
 ;; -------------------------------------------------------------------
 ;;; Completion
 
+(defun conf-completion-gitconfig-capf (start end candidates)
+  "Completion at point handler for gitconfig.
+Provides completion for fields in sections."
+  (let* ((section (save-excursion
+                    (goto-char start)
+                    (ignore-errors (backward-sentence))
+                    (and (looking-at "\\[\\([^\] \t\n]+\\)")
+                         (match-string 1))))
+         (n (length section)))
+    (when section
+      (list start end (cl-loop for c in candidates
+                               when (string-prefix-p section c)
+                               collect (substring c (1+ n)))))))
+
+(defun conf-completion--botap ()
+  "Return bounds of completion prefix at point."
+  (if conf-completion-botap
+      (funcall conf-completion-botap)
+    (or (bounds-of-thing-at-point 'symbol)
+        (cons (point) (point)))))
+
 ;;;###autoload
 (defun conf-completion-at-point ()
   "Completion at point for configs.
 Must be configured with to work for a given program with a way to retrieve
 the possible configuration candidates, see `conf-completion-program',
 `conf-completion-args', `conf-completion-regexp'."
-  (pcase-let ((`(,start . ,end) (bounds-of-thing-at-point 'symbol)))
+  (pcase-let ((`(,start . ,end) (conf-completion--botap)))
     (when start
       (when conf-completion-skip-leading-regexp
         (save-excursion
@@ -204,7 +238,7 @@ the possible configuration candidates, see `conf-completion-program',
                       (looking-at-p conf-completion-skip-leading-regexp))
             (forward-char 1))
           (setq start (point))))
-      (when (< start end)
+      (when (and start end (<= start end))
         (let ((candidates (gethash conf-completion-program conf-completion-cache)))
           (cond
            ((null conf-completion-program)
@@ -215,11 +249,14 @@ the possible configuration candidates, see `conf-completion-program',
             (when (null candidates)
               (conf-completion-start-process-async)
               nil))
+           (conf-completion-capf-function
+            (funcall conf-completion-capf-function start end candidates))
            (t
             (list start end candidates
                   :annotation-function
                   (lambda (s)
-                    (concat " " (or (get-text-property 0 'annotation s) "")))))))))))
+                    (concat " "
+                            (or (get-text-property 0 'annotation s) "")))))))))))
 
 (provide 'conf-completion)
 ;; Local Variables:
