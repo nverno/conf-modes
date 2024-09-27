@@ -202,20 +202,6 @@ CALLBACK, if given, will be called with completion candidates."
 ;; -------------------------------------------------------------------
 ;;; Completion
 
-(defun conf-completion-gitconfig-capf (start end candidates)
-  "Completion at point handler for gitconfig.
-Provides completion for fields in sections."
-  (let* ((section (save-excursion
-                    (goto-char start)
-                    (ignore-errors (backward-sentence))
-                    (and (looking-at "\\[\\([^\] \t\n]+\\)")
-                         (match-string 1))))
-         (n (length section)))
-    (when section
-      (list start end (cl-loop for c in candidates
-                               when (string-prefix-p section c)
-                               collect (substring c (1+ n)))))))
-
 (defun conf-completion--botap ()
   "Return bounds of completion prefix at point."
   (if conf-completion-botap
@@ -235,8 +221,9 @@ the possible configuration candidates, see `conf-completion-program',
         (save-excursion
           (goto-char start)
           (while (and (< (point) end)
-                      (looking-at-p conf-completion-skip-leading-regexp))
-            (forward-char 1))
+                      (looking-at conf-completion-skip-leading-regexp))
+            ;; (forward-char 1)
+            (goto-char (match-end 0)))
           (setq start (point))))
       (when (and start end (<= start end))
         (let ((candidates (gethash conf-completion-program conf-completion-cache)))
@@ -244,19 +231,45 @@ the possible configuration candidates, see `conf-completion-program',
            ((null conf-completion-program)
             (remove-hook 'completion-at-point-functions #'conf-completion-at-point t)
             (user-error "Must setup `conf-completion-program'"))
-           ((or (null candidates) (eq 'fail candidates))
+           ((or (null candidates)
+                (eq 'fail candidates))
             (remove-hook 'completion-at-point-functions #'conf-completion-at-point t)
             (when (null candidates)
               (conf-completion-start-process-async)
               nil))
            (conf-completion-capf-function
             (funcall conf-completion-capf-function start end candidates))
-           (t
-            (list start end candidates
-                  :annotation-function
-                  (lambda (s)
-                    (concat " "
-                            (or (get-text-property 0 'annotation s) "")))))))))))
+           (t (list start end candidates
+                    :annotation-function (lambda (s)
+                                           (concat " " (or (get-text-property
+                                                            0 'annotation s)
+                                                           "")))))))))))
+
+
+;;; Gitconfig Completion
+
+(defun conf-completion-gitconfig-capf (start end candidates)
+  "Completion at point for gitconfig.
+
+Provides completion for gitconfig options (\"git help --config\") relevant to
+whatever section the point is currently in."
+  (let* ((section (save-excursion
+                    (goto-char start)
+                    (ignore-errors (beginning-of-defun))
+                    (and (looking-at "\\[\\([^\] \t\n]+\\)")
+                         (match-string 1))))
+         (n (length section)))
+    (when section
+      (list start end
+            (cl-loop for c in candidates
+                     when (string-prefix-p section c)
+                     collect (substring c (1+ n)))))))
+
+;;; TODO(09/26/24): when point is on blank, fully indented line in
+;;; `gitconfig-mode', `gitconfig-indent-line' should return `noindent' so
+;;; completion-at-point happens
+(defun gitconfig@indent-or-complete (_orig)
+  "Advice around `gitconfig-indent-line' to return \\='noindent on an empty line.")
 
 (provide 'conf-completion)
 ;; Local Variables:
