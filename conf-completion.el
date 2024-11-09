@@ -119,7 +119,7 @@ found."
   (interactive)
   (let ((fname (or filename
                    (file-name-nondirectory (or (buffer-file-name) (buffer-name))))))
-    (when-let ((vals (car (assoc-default fname conf-completion-alist))))
+    (when-let* ((vals (car (assoc-default fname conf-completion-alist))))
       (pcase-dolist (`(,k . ,v) vals)
         (if (eq k 'program)
             (setq conf-completion-program (car v)
