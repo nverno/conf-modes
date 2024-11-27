@@ -4,7 +4,7 @@
 
 ;; Author: Noah Peart <noah.v.peart@gmail.com>
 ;; URL: https://github.com/nverno/conf-mode
-;; Package-Requires: 
+;; Package-Requires:
 ;; Created:  7 November 2016
 ;; Version: 0.1.0
 ;; Keywords:
@@ -39,6 +39,7 @@
   '("add" "clear" "keycode" "keysym" "pointer" "remove")
   nil
   '("[xX]modmap\\(rc\\)?\\'")
+  nil
   "Simple mode for xmodmap files.")
 
 ;;;###autoload
